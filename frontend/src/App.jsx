@@ -9,6 +9,8 @@ import LiveCapture from "./components/LiveCapture";
 import VetLocator from "./components/VetLocator";
 import DietEngine from "./components/DietEngine";
 import AdminConsole from "./components/AdminConsole";
+import LandingPage from "./components/LandingPage";
+import OnboardingFunnel from "./components/OnboardingFunnel";
 import api from "./services/api";
 import "./App.css";
 
@@ -17,6 +19,8 @@ function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [predictionResults, setPredictionResults] = useState(null);
   const [predictLoading, setPredictLoading] = useState(false);
+  const [isOnboarding, setIsOnboarding] = useState(false);
+  const [showAuthDirectly, setShowAuthDirectly] = useState(false);
 
   useEffect(() => {
     // Check local storage for active session
@@ -67,9 +71,48 @@ function App() {
   };
 
   if (!user) {
+    if (isOnboarding) {
+      return (
+        <div className="app-container">
+          <OnboardingFunnel
+            onOnboardingComplete={handleLoginSuccess}
+            onCancel={() => setIsOnboarding(false)}
+          />
+        </div>
+      );
+    }
+
+    if (showAuthDirectly) {
+      return (
+        <div className="app-container">
+          <div style={{ padding: "16px 20px 0 20px", display: "flex" }}>
+            <button
+              onClick={() => setShowAuthDirectly(false)}
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--text-muted)",
+                fontSize: "12px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px"
+              }}
+            >
+              ← Back to Welcome
+            </button>
+          </div>
+          <AuthScreen onLoginSuccess={handleLoginSuccess} />
+        </div>
+      );
+    }
+
     return (
       <div className="app-container">
-        <AuthScreen onLoginSuccess={handleLoginSuccess} />
+        <LandingPage
+          onStartOnboarding={() => setIsOnboarding(true)}
+          onSkipToAuth={() => setShowAuthDirectly(true)}
+        />
       </div>
     );
   }
@@ -81,6 +124,10 @@ function App() {
         setActiveTab={setActiveTab}
         user={user}
         onLogout={handleLogout}
+        onReonboard={() => {
+          handleLogout();
+          setIsOnboarding(true);
+        }}
       />
 
 

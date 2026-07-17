@@ -1,6 +1,6 @@
 import React from "react";
 
-export function Navbar({ activeTab, setActiveTab, user, onLogout }) {
+export function Navbar({ activeTab, setActiveTab, user, onLogout, onReonboard }) {
   const isPremium = user?.billing_status === "active";
 
   const navItems = [
@@ -34,27 +34,18 @@ export function Navbar({ activeTab, setActiveTab, user, onLogout }) {
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <div style={{ textAlign: "right" }}>
-            <span
-              style={{
-                fontSize: "9px",
-                padding: "2px 6px",
-                borderRadius: "20px",
-                fontWeight: "700",
-                textTransform: "uppercase",
-                backgroundColor: isPremium ? "rgba(16, 185, 129, 0.15)" : "rgba(99, 102, 241, 0.15)",
-                color: isPremium ? "var(--green-neon)" : "var(--accent)",
-                border: `1px solid ${isPremium ? "rgba(16, 185, 129, 0.3)" : "rgba(99, 102, 241, 0.3)"}`
-              }}
-            >
-              {isPremium ? "Pro" : "Free"}
-            </span>
-          </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <button
+            onClick={onReonboard}
+            className="btn-secondary"
+            style={{ padding: "6px 10px", fontSize: "11px", borderRadius: "6px", display: "flex", alignItems: "center", gap: "4px" }}
+          >
+            <span>⚙️</span> Calibrate
+          </button>
           <button
             onClick={onLogout}
             className="btn-secondary"
-            style={{ padding: "6px 12px", fontSize: "11px", borderRadius: "6px" }}
+            style={{ padding: "6px 10px", fontSize: "11px", borderRadius: "6px" }}
           >
             Sign Out
           </button>
