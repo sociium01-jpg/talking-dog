@@ -178,22 +178,28 @@ export function ResultsPanel({ results, loading }) {
             </div>
           </div>
 
-          {/* Medical disclaimer */}
+          {/* Medical disclaimer & AI model limitations */}
           <div style={{ 
             fontSize: "11px", 
             color: "var(--text-muted)", 
-            padding: "12px", 
+            padding: "16px", 
             backgroundColor: "rgba(255,255,255,0.02)", 
-            borderRadius: "6px",
+            borderRadius: "8px",
             border: "1px dashed var(--border-color)",
             display: "flex",
-            gap: "8px",
-            alignItems: "flex-start"
+            flexDirection: "column",
+            gap: "10px"
           }}>
-            <span>⚠️</span>
-            <span>
-              <strong>Disclaimer:</strong> Translations are best-guess intent estimations based on human-perceived body language datasets. They do not constitute veterinary or clinical diagnosis.
-            </span>
+            <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              <span>⚠️</span>
+              <strong style={{ color: "#eee" }}>AI Translation Disclaimer & Limitations:</strong>
+            </div>
+            <ul style={{ paddingLeft: "18px", margin: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
+              <li><strong>Not Clinical</strong>: Estimates intent based on body language models. Not a substitute for professional veterinary advice.</li>
+              <li><strong>Breed Skew</strong>: Keypoint models are trained on specific structures; mixed/unique breeds may produce slightly varied metrics.</li>
+              <li><strong>Lighting & Contrast</strong>: Poor light or low contrast degrade keypoint tracking accuracy.</li>
+              <li><strong>Single-Dog Constraint</strong>: The computer vision bounding box assumes only a single dog is present in the feed.</li>
+            </ul>
           </div>
         </div>
       </div>

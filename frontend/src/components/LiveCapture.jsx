@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import api from "../services/api";
 import BreedSelector from "./BreedSelector";
+import { LiveAudioSlidingWindowClassifier } from "../services/sliding_window";
+
 
 const DURATIONS = [5, 10, 15, 30];
 
@@ -13,6 +15,7 @@ export default function LiveCapture({ onResult }) {
   const timerRef = useRef(null);
   const analyserRef = useRef(null);
   const animFrameRef = useRef(null);
+  const slidingClassifierRef = useRef(null);
 
   const [isStreaming, setIsStreaming] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -25,6 +28,8 @@ export default function LiveCapture({ onResult }) {
   const [cameraSupported, setCameraSupported] = useState(true);
   const [breed, setBreed] = useState("");
   const [age, setAge] = useState("");
+  const [realtimeAudioClass, setRealtimeAudioClass] = useState(null);
+
 
 
   // Start camera stream
@@ -52,6 +57,15 @@ export default function LiveCapture({ onResult }) {
       analyser.fftSize = 256;
       source.connect(analyser);
       analyserRef.current = analyser;
+
+      // Start continuous sliding-window audio classifier
+      const classifier = new LiveAudioSlidingWindowClassifier({
+        onClassification: (res) => {
+          setRealtimeAudioClass(res);
+        }
+      });
+      classifier.start(stream);
+      slidingClassifierRef.current = classifier;
 
       setIsStreaming(true);
       setStatus("streaming");
@@ -148,7 +162,12 @@ export default function LiveCapture({ onResult }) {
       streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
+    if (slidingClassifierRef.current) {
+      slidingClassifierRef.current.stop();
+      slidingClassifierRef.current = null;
+    }
     setIsStreaming(false);
+    setRealtimeAudioClass(null);
 
     try {
       const mimeType = chunksRef.current[0]?.type || "video/webm";
@@ -179,6 +198,9 @@ export default function LiveCapture({ onResult }) {
   useEffect(() => {
     return () => {
       if (streamRef.current) streamRef.current.getTracks().forEach((t) => t.stop());
+      if (slidingClassifierRef.current) {
+        slidingClassifierRef.current.stop();
+      }
       clearInterval(timerRef.current);
       cancelAnimationFrame(animFrameRef.current);
     };
@@ -383,8 +405,17 @@ export default function LiveCapture({ onResult }) {
       {/* Audio level meter */}
       {isStreaming && (
         <div style={{ marginBottom: "20px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
             <span style={{ fontSize: "0.8rem", opacity: 0.6 }}>🎙 Microphone level</span>
+            {realtimeAudioClass && (
+              <span style={{
+                fontSize: "11px", fontWeight: "700",
+                color: realtimeAudioClass.valence === "positive" ? "var(--green-neon)" : "var(--red-neon)",
+                background: "rgba(255,255,255,0.06)", padding: "2px 8px", borderRadius: "10px"
+              }}>
+                🔊 Live Sound: {realtimeAudioClass.vocalization} ({realtimeAudioClass.arousal} arousal)
+              </span>
+            )}
           </div>
           <div style={{ height: "6px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", overflow: "hidden" }}>
             <div style={{
