@@ -5,6 +5,7 @@ import UploadZone from "./components/UploadZone";
 import ResultsPanel from "./components/ResultsPanel";
 import HistoryList from "./components/HistoryList";
 import BillingPortal from "./components/BillingPortal";
+import LiveCapture from "./components/LiveCapture";
 import api from "./services/api";
 import "./App.css";
 
@@ -82,6 +83,17 @@ function App() {
                 loading={predictLoading}
               />
             )}
+          </div>
+        )}
+
+        {activeTab === "live" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+            <LiveCapture
+              onResult={(result) => {
+                setPredictionResults(result);
+                setActiveTab("dashboard");
+              }}
+            />
           </div>
         )}
 

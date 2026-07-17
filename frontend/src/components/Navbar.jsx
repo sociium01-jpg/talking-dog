@@ -16,25 +16,31 @@ export function Navbar({ activeTab, setActiveTab, user, onLogout }) {
           </div>
         </div>
 
-        <nav style={{ display: "flex", gap: "24px" }}>
-          {["dashboard", "history", "billing"].map((tab) => (
+        <nav style={{ display: "flex", gap: "8px" }}>
+          {[
+            { id: "dashboard", label: "📤 Upload" },
+            { id: "live", label: "🔴 Live" },
+            { id: "history", label: "🕓 History" },
+            { id: "billing", label: "💳 Billing" }
+          ].map(({ id, label }) => (
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
+              key={id}
+              onClick={() => setActiveTab(id)}
               style={{
                 background: "none",
                 border: "none",
-                color: activeTab === tab ? "var(--text-active)" : "var(--text-muted)",
-                fontWeight: activeTab === tab ? "600" : "500",
-                fontSize: "14px",
+                color: activeTab === id ? "var(--text-active)" : "var(--text-muted)",
+                fontWeight: activeTab === id ? "600" : "500",
+                fontSize: "13px",
                 cursor: "pointer",
                 padding: "8px 12px",
                 borderRadius: "6px",
-                backgroundColor: activeTab === tab ? "rgba(255,255,255,0.05)" : "transparent",
-                transition: "all 0.2s ease"
+                backgroundColor: activeTab === id ? "rgba(255,255,255,0.05)" : "transparent",
+                transition: "all 0.2s ease",
+                whiteSpace: "nowrap"
               }}
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {label}
             </button>
           ))}
         </nav>
