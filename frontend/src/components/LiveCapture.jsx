@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import api from "../services/api";
+import BreedSelector from "./BreedSelector";
 
 const DURATIONS = [5, 10, 15, 30];
 
@@ -14,13 +15,15 @@ export default function LiveCapture({ onResult }) {
 
   const [isStreaming, setIsStreaming] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
-  const [facingMode, setFacingMode] = useState("environment"); // back camera by default
+  const [facingMode, setFacingMode] = useState("environment");
   const [duration, setDuration] = useState(15);
   const [countdown, setCountdown] = useState(null);
   const [audioLevel, setAudioLevel] = useState(0);
-  const [status, setStatus] = useState("idle"); // idle | streaming | recording | uploading | done | error
+  const [status, setStatus] = useState("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [cameraSupported, setCameraSupported] = useState(true);
+  const [breed, setBreed] = useState("");
+  const [age, setAge] = useState("");
 
   // Start camera stream
   const startStream = useCallback(async () => {
@@ -137,6 +140,14 @@ export default function LiveCapture({ onResult }) {
   // Handle recording blob — upload and predict
   const handleRecordingStop = useCallback(async () => {
     setStatus("uploading");
+
+    // Stop and clean up all stream tracks immediately to release the camera device
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    }
+    setIsStreaming(false);
+
     try {
       const mimeType = chunksRef.current[0]?.type || "video/webm";
       const ext = mimeType.includes("mp4") ? "mp4" : "webm";
@@ -147,15 +158,20 @@ export default function LiveCapture({ onResult }) {
       const uploadResult = await api.uploadFile(file);
       const videoUrl = uploadResult.url;
 
-      // Run prediction using the uploaded video URL
-      const result = await api.predictIntent(videoUrl, null, { source: "live_capture" });
+      // Run prediction using uploaded URL + breed metadata
+      const result = await api.predictIntent(videoUrl, null, {
+        source: "live_capture",
+        breed: breed || "Unknown",
+        age: age ? parseInt(age) : null
+      });
+      api.saveToLocalHistory(result, { breed: breed || "Unknown" });
       setStatus("done");
       if (onResult) onResult(result);
     } catch (err) {
       setStatus("error");
       setErrorMsg(`Processing failed: ${err.message}`);
     }
-  }, [onResult]);
+  }, [onResult, breed, age]);
 
   // Stop stream on unmount
   useEffect(() => {
@@ -295,6 +311,33 @@ export default function LiveCapture({ onResult }) {
         </div>
       )}
 
+      {/* Breed + Age (only when not recording) */}
+      {!isRecording && (
+        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "12px", marginBottom: "16px", alignItems: "start" }}>
+          <div>
+            <label style={{ display: "block", fontSize: "11px", opacity: 0.5, marginBottom: "5px", fontWeight: 600, textTransform: "uppercase" }}>Dog Breed</label>
+            <BreedSelector
+              value={breed}
+              onChange={(name) => setBreed(name)}
+              placeholder="Search 400+ breeds..."
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontSize: "11px", opacity: 0.5, marginBottom: "5px", fontWeight: 600, textTransform: "uppercase" }}>Age (yrs)</label>
+            <input
+              type="number" min="0" max="25" value={age}
+              onChange={(e) => setAge(e.target.value)}
+              placeholder="e.g. 3"
+              style={{
+                width: "70px", padding: "10px 10px", borderRadius: "8px",
+                background: "rgba(0,0,0,0.25)", border: "1px solid var(--border-color)",
+                color: "var(--text-main)", outline: "none", fontSize: "13px"
+              }}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Duration selector */}
       {!isRecording && (
         <div style={{ display: "flex", gap: "8px", marginBottom: "20px", flexWrap: "wrap" }}>
@@ -315,6 +358,7 @@ export default function LiveCapture({ onResult }) {
           ))}
         </div>
       )}
+
 
       {/* Error message */}
       {errorMsg && (

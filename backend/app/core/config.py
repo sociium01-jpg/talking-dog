@@ -24,4 +24,7 @@ class Settings:
     RAZORPAY_KEY_SECRET: str = os.getenv("RAZORPAY_KEY_SECRET", "mock-rzp-secret")
     RAZORPAY_WEBHOOK_SECRET: str = os.getenv("RAZORPAY_WEBHOOK_SECRET", "mock-rzp-webhook-secret")
 
+    # Hugging Face configurations
+    HF_TOKEN: str = os.getenv("HF_TOKEN", "")
+
 settings = Settings()

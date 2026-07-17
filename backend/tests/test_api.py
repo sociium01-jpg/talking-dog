@@ -16,7 +16,7 @@ def test_health_check():
 
 def test_predict_endpoint_no_auth():
     response = client.post("/api/v1/predict", json={})
-    assert response.status_code == 403  # HTTPBearer returns 403 when no credentials provided
+    assert response.status_code == 401  # HTTPBearer returns 401 when credentials not supplied
 
 def test_predict_endpoint_empty_payload():
     response = client.post("/api/v1/predict", json={}, headers=AUTH_HEADERS)

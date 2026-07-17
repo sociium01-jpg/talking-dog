@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import bannerImg from "../assets/banner.png";
 import api from "../services/api";
+import BreedSelector from "./BreedSelector";
 
 export function UploadZone({ onUploadStart, onUploadComplete }) {
   const [videoFile, setVideoFile] = useState(null);
@@ -174,12 +175,10 @@ export function UploadZone({ onUploadStart, onUploadComplete }) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
           <div>
             <label style={{ display: "block", fontSize: "11px", color: "var(--text-muted)", marginBottom: "6px", fontWeight: "600", textTransform: "uppercase" }}>Dog Breed</label>
-            <input 
-              type="text" 
-              value={breed} 
-              onChange={(e) => setBreed(e.target.value)} 
-              placeholder="e.g. Shiba Inu, Husky"
-              style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", backgroundColor: "rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-main)", outline: "none", fontSize: "13px" }}
+            <BreedSelector
+              value={breed}
+              onChange={(name) => setBreed(name)}
+              placeholder="Search 400+ breeds..."
             />
           </div>
           <div>
