@@ -42,11 +42,18 @@ function App() {
 
   const handleUploadComplete = async (videoUrl, audioUrl, metadata) => {
     try {
-      // Call prediction service endpoints
       const response = await api.predictIntent(videoUrl, audioUrl, metadata);
       setPredictionResults(response);
+      // Save to local history so the History tab always shows results
+      api.saveToLocalHistory(response, metadata);
     } catch (err) {
-      alert(`Prediction processing failed: ${err.message}`);
+      setPredictionResults({
+        _error: true,
+        fusion_narrative: `Something went wrong: ${err.message}. Please try again.`,
+        confidence: 0,
+        pose_results: {},
+        audio_results: {},
+      });
     } finally {
       setPredictLoading(false);
     }

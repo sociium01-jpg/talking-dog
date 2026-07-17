@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import bannerImg from "../assets/banner.png";
-
+import api from "../services/api";
 
 export function UploadZone({ onUploadStart, onUploadComplete }) {
   const [videoFile, setVideoFile] = useState(null);
@@ -37,38 +37,28 @@ export function UploadZone({ onUploadStart, onUploadComplete }) {
     onUploadStart();
 
     try {
-      // Simulate file upload intervals
       const interval = setInterval(() => {
         setUploadPercent((prev) => {
-          if (prev >= 90) {
-            clearInterval(interval);
-            return 90;
-          }
+          if (prev >= 80) { clearInterval(interval); return 80; }
           return prev + 20;
         });
-      }, 200);
+      }, 300);
 
-      // Perform mock URL uploads.
-      // In actual app, we call: api.uploadFile(videoFile)
-      // Here we map filenames to mock URLs to trigger mock predictions
+      // Upload real files via api service (tries backend, falls back to local URL)
       let videoUrl = null;
       let audioUrl = null;
 
       if (videoFile) {
-        // If file contains "happy" or "play", it triggers play bow mock.
-        // If "stiff" or "growl", triggers defensive bow.
-        // Else defaults to cowering/scared or relaxed.
-        videoUrl = `https://mock.storage/uploads/${videoFile.name}`;
+        const result = await api.uploadFile(videoFile);
+        videoUrl = result.url;
       }
       if (audioFile) {
-        audioUrl = `https://mock.storage/uploads/${audioFile.name}`;
+        const result = await api.uploadFile(audioFile);
+        audioUrl = result.url;
       }
 
-      // Simulate a small delay for upload network request
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       clearInterval(interval);
       setUploadPercent(100);
-
       onUploadComplete(videoUrl, audioUrl, { breed, age: age ? parseInt(age) : null });
     } catch (err) {
       alert(err.message || "Upload process failed.");
