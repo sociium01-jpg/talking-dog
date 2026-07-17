@@ -3,6 +3,9 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px 16px 85px 16px; /* 85px bottom padding for sticky tabbar */
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
 }
 
 .grid-cols-2 {

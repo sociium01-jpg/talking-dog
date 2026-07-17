@@ -18,6 +18,9 @@ ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
     "https://talking-dog-frontend.vercel.app",
+    "capacitor://localhost",
+    "http://localhost",
+    "https://localhost",
 ]
 
 app.add_middleware(

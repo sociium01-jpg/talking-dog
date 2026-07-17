@@ -1,0 +1,1222 @@
+{
+  "predictions": [
+    {
+      "user_id": "f07429d0-28c7-5688-8d00-61c502274108",
+      "video_url": "https://example.com/happy_dog.mp4",
+      "audio_url": "https://example.com/happy_bark.wav",
+      "pose_results": {
+        "posture": "play_bow",
+        "tail_wag": "high_fast",
+        "ears": "forward",
+        "confidence": 0.95
+      },
+      "audio_results": {
+        "vocalization": "high_bark",
+        "arousal": "high",
+        "valence": "positive",
+        "confidence": 0.91
+      },
+      "fusion_narrative": "\"I am so incredibly happy! Grab the ball and throw it right now, let's play! \ud83c\udfbe\"\n\nBehavior Analysis: The dog is displaying a playful posture (play_bow) with forward ears and a fast tail wag. These signals suggest a state of high arousal and positive valence, indicating an active desire to interact and play. Specific observed markers include: posture is play_bow, tail wag is high_fast, ears are forward, vocalization is high_bark.",
+      "confidence": 0.9299999999999999,
+      "id": "bc7e9160-cd33-4f7d-90b1-9bef6bbb7440",
+      "created_at": "2026-07-17T13:26:04.833862"
+    },
+    {
+      "user_id": "f07429d0-28c7-5688-8d00-61c502274108",
+      "video_url": "https://example.com/fear_dog.mp4",
+      "audio_url": "https://example.com/whine.wav",
+      "pose_results": {
+        "posture": "cowering",
+        "tail_wag": "tucked",
+        "ears": "pinned",
+        "confidence": 0.88
+      },
+      "audio_results": {
+        "vocalization": "whine",
+        "arousal": "low",
+        "valence": "negative",
+        "confidence": 0.85
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is cowering, tail wag is tucked, ears are pinned, vocalization is whine.",
+      "confidence": 0.865,
+      "id": "7f20e727-3636-458d-a5e9-b91fdb3007b0",
+      "created_at": "2026-07-17T13:26:04.933638"
+    },
+    {
+      "user_id": "f07429d0-28c7-5688-8d00-61c502274108",
+      "video_url": "https://example.com/play_dog.mp4",
+      "audio_url": "https://example.com/bark.wav",
+      "pose_results": {
+        "posture": "play_bow",
+        "tail_wag": "high_fast",
+        "ears": "forward",
+        "confidence": 0.95
+      },
+      "audio_results": {
+        "vocalization": "high_bark",
+        "arousal": "high",
+        "valence": "positive",
+        "confidence": 0.91
+      },
+      "fusion_narrative": "\"I am so incredibly happy! Grab the ball and throw it right now, let's play! \ud83c\udfbe\"\n\nBehavior Analysis: The dog is displaying a playful posture (play_bow) with forward ears and a fast tail wag. These signals suggest a state of high arousal and positive valence, indicating an active desire to interact and play. Specific observed markers include: posture is play_bow, tail wag is high_fast, ears are forward, vocalization is high_bark.",
+      "confidence": 0.9299999999999999,
+      "id": "54d138dd-df7a-4443-84af-3b1cfbf4a3bf",
+      "created_at": "2026-07-17T13:26:05.171686"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "b8e37f22-6647-4bbe-a495-d20a2f7373ef",
+      "created_at": "2026-07-17T13:26:06.122204"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "befda971-37ed-4d4b-941f-f186e5da9dce",
+      "created_at": "2026-07-17T13:26:06.234014"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "8c7a9a0a-cdab-48bb-af2d-235319cc2f6e",
+      "created_at": "2026-07-17T13:26:06.318101"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "b132d9d6-dbf5-4819-9510-202cfb179fb2",
+      "created_at": "2026-07-17T13:26:06.437564"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "5cc5caa5-f6da-4f9d-8bd3-ef4c5ff397e0",
+      "created_at": "2026-07-17T13:26:06.532191"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "55d73f9c-93e8-4469-8c2b-1c1ccbe2e537",
+      "created_at": "2026-07-17T13:26:06.633657"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "de98ae8f-6919-4a17-bd6c-2ef8104795e6",
+      "created_at": "2026-07-17T13:26:06.720149"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "978addb4-0b8b-4cca-978e-80c2a6a1bc20",
+      "created_at": "2026-07-17T13:26:06.792127"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "2ebf2616-e898-4299-9d7b-642bb9921216",
+      "created_at": "2026-07-17T13:26:06.901295"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "91b2b433-c4d2-414f-8d4e-8a6f9cd18462",
+      "created_at": "2026-07-17T13:26:06.976320"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "912315a8-53ae-4a4c-9ad8-8fea4277ebf6",
+      "created_at": "2026-07-17T13:26:07.124126"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "d435c6e0-b977-4b76-8324-db69ae4304fc",
+      "created_at": "2026-07-17T13:26:07.245881"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "d517b35f-bc3a-4b85-ba96-d5c445560a56",
+      "created_at": "2026-07-17T13:26:07.354992"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "08dd3c19-04de-4dd1-bd52-200a08aadbed",
+      "created_at": "2026-07-17T13:26:07.430808"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "000d615a-0e4c-4000-810f-00bcb683b2cb",
+      "created_at": "2026-07-17T13:26:07.519437"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "b21b5da1-9d29-4b3f-8573-7f2fef10d5a5",
+      "created_at": "2026-07-17T13:26:07.657772"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "e590d440-dd2a-4323-b3e0-cf876d59dc3a",
+      "created_at": "2026-07-17T13:26:07.736871"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "441c240a-d2a1-4c86-9b49-2a461bcbebca",
+      "created_at": "2026-07-17T13:26:07.883537"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "4f1f649d-88c4-4011-862b-016b52150002",
+      "created_at": "2026-07-17T13:26:08.546515"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "63b59124-2cd0-4089-9884-34d9b8df5283",
+      "created_at": "2026-07-17T13:26:08.652092"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "dcab99c2-eab9-49ee-a100-49d0ac6cb1a5",
+      "created_at": "2026-07-17T13:26:08.760071"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "2f4c6052-b4d0-4fab-bc66-849769194bb5",
+      "created_at": "2026-07-17T13:26:08.917856"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "9b175298-28c3-4cb2-9766-7179442197e3",
+      "created_at": "2026-07-17T13:26:09.039003"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "1a61ce74-5aab-4e42-a5e2-d15836bbdc49",
+      "created_at": "2026-07-17T13:26:09.108391"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "0bbe6af1-92e9-48f5-9920-3c81460da527",
+      "created_at": "2026-07-17T13:26:09.206036"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "ab0aeeaa-07c3-47f0-a9bb-421b388c9206",
+      "created_at": "2026-07-17T13:26:09.276149"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "78a52c7d-0ced-4d04-bd71-8d0123c225de",
+      "created_at": "2026-07-17T13:26:09.419848"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "2b74b8dc-68b3-46f9-a949-c3c929a362f9",
+      "created_at": "2026-07-17T13:26:09.503717"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "7f3ab211-aea1-423d-b2c5-9d6c607c9c5b",
+      "created_at": "2026-07-17T13:26:09.580332"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "8be5d065-bc68-490b-8512-165115e9ecab",
+      "created_at": "2026-07-17T13:26:09.655950"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "e9cdc652-9abc-42c6-af5a-efc46c724f62",
+      "created_at": "2026-07-17T13:26:09.733322"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "7b4a45f9-5362-4096-9b1f-40ac28b5de74",
+      "created_at": "2026-07-17T13:26:09.862117"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "7919ee10-056a-4aae-a644-52cc1a9bc60f",
+      "created_at": "2026-07-17T13:26:09.990739"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "300be89e-e271-4086-bbee-62bd76e46f5f",
+      "created_at": "2026-07-17T13:26:10.062542"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "117b97bd-01f1-4428-8812-0a247c8601ea",
+      "created_at": "2026-07-17T13:26:10.201197"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "ebcb3f64-c19d-42a3-a8e9-d0152a7aae12",
+      "created_at": "2026-07-17T13:26:10.320861"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "b03407e1-9984-4d9a-95cd-150e3262384a",
+      "created_at": "2026-07-17T13:26:10.401447"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "2d21fb33-ed84-40e0-9e13-cf974e2c96f4",
+      "created_at": "2026-07-17T13:26:10.474022"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "b6ae6d8f-a21f-4ecb-97d6-a8957c5113d3",
+      "created_at": "2026-07-17T13:26:10.588774"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "7ee15ecd-f520-45d7-9c86-308bc14b57f8",
+      "created_at": "2026-07-17T13:26:10.664116"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "642bda21-d612-465a-b513-548da61f7261",
+      "created_at": "2026-07-17T13:26:10.732698"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "80641280-8362-4458-8cad-c79062e1b59d",
+      "created_at": "2026-07-17T13:26:10.803776"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "f7d6ea43-2e32-463c-b5ac-a8652e19cca6",
+      "created_at": "2026-07-17T13:26:10.891143"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "d4f8ae97-4875-496a-a359-7b3fc722a04c",
+      "created_at": "2026-07-17T13:26:10.999147"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "85f52004-7844-485e-b9e7-850d5ed3f0ab",
+      "created_at": "2026-07-17T13:26:11.092108"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "6720a813-10a5-4b73-b93f-90f7fcc3b71f",
+      "created_at": "2026-07-17T13:26:11.738911"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "dd1e0dbe-6b59-4bf3-872f-b4fcebd5fd61",
+      "created_at": "2026-07-17T13:26:11.839349"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "7a5b7df1-8bbb-48eb-9fa4-bb45106443e9",
+      "created_at": "2026-07-17T13:26:11.906436"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "71048f85-c1b5-4294-bd1a-d6da1d44987f",
+      "created_at": "2026-07-17T13:26:11.976513"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "b3afe5d4-8532-4c00-b8df-f6677c7cd5cc",
+      "created_at": "2026-07-17T13:26:12.067813"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "e7771e0b-120e-4648-b235-540ae812a409",
+      "created_at": "2026-07-17T13:26:12.141920"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "4a2a57ae-c24b-4d90-b3c3-fe40ebfd49d6",
+      "created_at": "2026-07-17T13:26:12.210078"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "5124a144-fff0-49ad-8bf0-027024d0c515",
+      "created_at": "2026-07-17T13:26:12.276228"
+    },
+    {
+      "user_id": "bace0701-15e3-5144-97c5-47487d543032",
+      "video_url": "http://mock.url/test.mp4",
+      "audio_url": "http://mock.url/test.wav",
+      "pose_results": {
+        "posture": "relaxed",
+        "tail_wag": "broad_slow",
+        "ears": "neutral",
+        "confidence": 0.85
+      },
+      "audio_results": {
+        "vocalization": "whimper",
+        "arousal": "low",
+        "valence": "positive",
+        "confidence": 0.78
+      },
+      "fusion_narrative": "\"I feel super anxious and frightened right now... Can we go somewhere quiet? \ud83e\udd7a\"\n\nBehavior Analysis: The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability. Specific observed markers include: posture is relaxed, tail wag is broad_slow, ears are neutral, vocalization is whimper.",
+      "confidence": 0.815,
+      "id": "12d95f15-dfe3-4aac-a9ba-12875b138d1e",
+      "created_at": "2026-07-17T13:26:12.348301"
+    }
+  ],
+  "profiles": {},
+  "transactions": [
+    {
+      "user_id": "f07429d0-28c7-5688-8d00-61c502274108",
+      "amount": 499.0,
+      "currency": "INR",
+      "status": "pending",
+      "razorpay_order_id": "order_e0e5403771",
+      "razorpay_payment_id": null,
+      "id": "74a133cb-2468-41f8-ba19-835717bb7eab",
+      "created_at": "2026-07-17T13:26:05.413526"
+    },
+    {
+      "id": "tx-seed-001",
+      "user_id": "test-user-guid-12345",
+      "razorpay_order_id": "order_test123",
+      "status": "pending",
+      "amount": 499.0,
+      "currency": "INR"
+    }
+  ]
+}

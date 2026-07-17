@@ -1,4 +1,5 @@
 import os
+import json
 from typing import List, Dict, Any, Optional
 from supabase import create_client, Client
 from app.core.config import settings
@@ -6,9 +7,8 @@ from app.core.config import settings
 class SupabaseService:
     def __init__(self):
         # Always initialize mock databases to prevent AttributeError during tests/fallbacks
-        self._mock_predictions = []
-        self._mock_profiles = {}
-        self._mock_transactions = []
+        self.mock_db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "mock_db.json")
+        self._load_mock_db()
 
         self.is_mock = (
             not settings.SUPABASE_URL
@@ -23,6 +23,31 @@ class SupabaseService:
                 self.client = None
         else:
             self.client = None
+
+    def _load_mock_db(self):
+        self._mock_predictions = []
+        self._mock_profiles = {}
+        self._mock_transactions = []
+        if os.path.exists(self.mock_db_path):
+            try:
+                with open(self.mock_db_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    self._mock_predictions = data.get("predictions", [])
+                    self._mock_profiles = data.get("profiles", {})
+                    self._mock_transactions = data.get("transactions", [])
+            except Exception:
+                pass
+
+    def _save_mock_db(self):
+        try:
+            with open(self.mock_db_path, "w", encoding="utf-8") as f:
+                json.dump({
+                    "predictions": self._mock_predictions,
+                    "profiles": self._mock_profiles,
+                    "transactions": self._mock_transactions
+                }, f, indent=2)
+        except Exception:
+            pass
 
     def get_user_from_token(self, token: str) -> Dict[str, Any]:
         import uuid
@@ -100,6 +125,7 @@ class SupabaseService:
             data["id"] = str(uuid.uuid4())
             data["created_at"] = datetime.utcnow().isoformat()
             self._mock_predictions.append(data)
+            self._save_mock_db()
             return data
         
         try:
@@ -114,6 +140,7 @@ class SupabaseService:
             data["id"] = str(uuid.uuid4())
             data["created_at"] = datetime.utcnow().isoformat()
             self._mock_predictions.append(data)
+            self._save_mock_db()
             return data
 
     def get_user_predictions(self, user_id: str) -> List[Dict[str, Any]]:
@@ -158,6 +185,7 @@ class SupabaseService:
             profile = self.get_profile(user_id)
             profile.update(data)
             self._mock_profiles[user_id] = profile
+            self._save_mock_db()
             return profile
         
         try:
@@ -190,6 +218,7 @@ class SupabaseService:
             data["id"] = str(uuid.uuid4())
             data["created_at"] = datetime.utcnow().isoformat()
             self._mock_transactions.append(data)
+            self._save_mock_db()
             return data
             
         try:
@@ -202,6 +231,8 @@ class SupabaseService:
             from datetime import datetime
             data["id"] = str(uuid.uuid4())
             data["created_at"] = datetime.utcnow().isoformat()
+            self._mock_transactions.append(data)
+            self._save_mock_db()
             return data
 
     def update_transaction_status(self, razorpay_order_id: str, status: str, razorpay_payment_id: Optional[str] = None, razorpay_signature: Optional[str] = None) -> Dict[str, Any]:
@@ -215,13 +246,17 @@ class SupabaseService:
             for tx in self._mock_transactions:
                 if tx["razorpay_order_id"] == razorpay_order_id:
                     tx.update(data)
+                    self._save_mock_db()
                     return tx
             import uuid
-            return {
+            res_tx = {
                 "id": str(uuid.uuid4()),
                 "razorpay_order_id": razorpay_order_id,
                 **data
             }
+            self._mock_transactions.append(res_tx)
+            self._save_mock_db()
+            return res_tx
             
         try:
             res = self.client.table("transactions").update(data).eq("razorpay_order_id", razorpay_order_id).execute()

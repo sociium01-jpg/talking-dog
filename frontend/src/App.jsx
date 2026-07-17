@@ -73,7 +73,7 @@ function App() {
   if (!user) {
     if (isOnboarding) {
       return (
-        <div className="app-container">
+        <div className="app-container" style={{ overflowY: "auto" }}>
           <OnboardingFunnel
             onOnboardingComplete={handleLoginSuccess}
             onCancel={() => setIsOnboarding(false)}
@@ -84,7 +84,7 @@ function App() {
 
     if (showAuthDirectly) {
       return (
-        <div className="app-container">
+        <div className="app-container" style={{ overflowY: "auto" }}>
           <div style={{ padding: "16px 20px 0 20px", display: "flex" }}>
             <button
               onClick={() => setShowAuthDirectly(false)}
@@ -108,7 +108,7 @@ function App() {
     }
 
     return (
-      <div className="app-container">
+      <div className="app-container" style={{ overflowY: "auto" }}>
         <LandingPage
           onStartOnboarding={() => setIsOnboarding(true)}
           onSkipToAuth={() => setShowAuthDirectly(true)}

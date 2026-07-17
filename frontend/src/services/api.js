@@ -3,7 +3,17 @@
 // Smart hybrid: tries live backend, falls back to local mock.
 // ============================================================
 
-const API_BASE_URL = "https://talkingdog-backend.onrender.com/api/v1";
+const getApiBaseUrl = () => {
+  if (typeof window !== "undefined" && window.location) {
+    const hostname = window.location.hostname;
+    if (hostname === "localhost" || hostname === "127.0.0.1" || hostname.startsWith("192.168.")) {
+      return "http://localhost:8000/api/v1";
+    }
+  }
+  return "https://talkingdog-backend.onrender.com/api/v1";
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 // ---- Local Mock Prediction Engine ----
 // Interprets posture + audio signals and generates a realistic
