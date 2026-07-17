@@ -10,6 +10,7 @@ export function UploadZone({ onUploadStart, onUploadComplete }) {
   const [age, setAge] = useState("");
   const [loading, setLoading] = useState(false);
   const [uploadPercent, setUploadPercent] = useState(0);
+  const [optIn, setOptIn] = useState(true);
 
   const videoInputRef = useRef(null);
   const audioInputRef = useRef(null);
@@ -192,6 +193,16 @@ export function UploadZone({ onUploadStart, onUploadComplete }) {
             />
           </div>
         </div>
+
+        <label style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "13px", cursor: "pointer", marginTop: "10px", marginBottom: "10px" }}>
+          <input
+            type="checkbox"
+            checked={optIn}
+            onChange={(e) => setOptIn(e.target.checked)}
+            style={{ accentColor: "var(--accent)" }}
+          />
+          <span style={{ opacity: 0.75 }}>Opt-in: Share my dog's recording anonymously to help train future open-source models.</span>
+        </label>
 
         {loading && uploadPercent > 0 && (
           <div style={{ width: "100%", backgroundColor: "rgba(255,255,255,0.05)", borderRadius: "10px", height: "8px", overflow: "hidden", marginTop: "10px" }}>

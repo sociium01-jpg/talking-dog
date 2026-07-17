@@ -29,6 +29,7 @@ export default function LiveCapture({ onResult }) {
   const [breed, setBreed] = useState("");
   const [age, setAge] = useState("");
   const [realtimeAudioClass, setRealtimeAudioClass] = useState(null);
+  const [optIn, setOptIn] = useState(true);
 
 
 
@@ -457,7 +458,21 @@ export default function LiveCapture({ onResult }) {
         </div>
       )}
 
-      {/* Duration selector */}
+      {/* Opt-in sharing & Duration selector */}
+      {!isRecording && (
+        <div style={{ marginBottom: "16px" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "13px", cursor: "pointer", marginBottom: "14px" }}>
+            <input
+              type="checkbox"
+              checked={optIn}
+              onChange={(e) => setOptIn(e.target.checked)}
+              style={{ accentColor: "var(--accent)" }}
+            />
+            <span style={{ opacity: 0.75 }}>Opt-in: Share my dog's recording anonymously to help train future open-source models.</span>
+          </label>
+        </div>
+      )}
+
       {!isRecording && (
         <div style={{ display: "flex", gap: "8px", marginBottom: "20px", flexWrap: "wrap" }}>
           <span style={{ opacity: 0.6, fontSize: "0.85rem", alignSelf: "center" }}>Duration:</span>

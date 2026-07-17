@@ -16,12 +16,15 @@ export function Navbar({ activeTab, setActiveTab, user, onLogout }) {
           </div>
         </div>
 
-        <nav style={{ display: "flex", gap: "8px" }}>
+        <nav style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center" }}>
           {[
             { id: "dashboard", label: "📤 Upload" },
             { id: "live", label: "🔴 Live" },
+            { id: "vets", label: "🏥 Vets" },
+            { id: "diet", label: "🥗 Diet" },
             { id: "history", label: "🕓 History" },
-            { id: "billing", label: "💳 Billing" }
+            { id: "billing", label: "💳 Billing" },
+            { id: "admin", label: "⚙️ Admin" }
           ].map(({ id, label }) => (
             <button
               key={id}
@@ -31,9 +34,9 @@ export function Navbar({ activeTab, setActiveTab, user, onLogout }) {
                 border: "none",
                 color: activeTab === id ? "var(--text-active)" : "var(--text-muted)",
                 fontWeight: activeTab === id ? "600" : "500",
-                fontSize: "13px",
+                fontSize: "12px",
                 cursor: "pointer",
-                padding: "8px 12px",
+                padding: "6px 10px",
                 borderRadius: "6px",
                 backgroundColor: activeTab === id ? "rgba(255,255,255,0.05)" : "transparent",
                 transition: "all 0.2s ease",

@@ -6,6 +6,9 @@ import ResultsPanel from "./components/ResultsPanel";
 import HistoryList from "./components/HistoryList";
 import BillingPortal from "./components/BillingPortal";
 import LiveCapture from "./components/LiveCapture";
+import VetLocator from "./components/VetLocator";
+import DietEngine from "./components/DietEngine";
+import AdminConsole from "./components/AdminConsole";
 import api from "./services/api";
 import "./App.css";
 
@@ -125,6 +128,18 @@ function App() {
             user={user}
             onBillingUpdate={handleBillingUpdate}
           />
+        )}
+
+        {activeTab === "vets" && (
+          <VetLocator />
+        )}
+
+        {activeTab === "diet" && (
+          <DietEngine />
+        )}
+
+        {activeTab === "admin" && (
+          <AdminConsole />
         )}
       </main>
     </div>

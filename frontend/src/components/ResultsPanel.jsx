@@ -4,6 +4,9 @@ export function ResultsPanel({ results, loading }) {
   const [chatInput, setChatInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [showCorrection, setShowCorrection] = useState(false);
+  const [correctedMood, setCorrectedMood] = useState("happy");
+  const [submittedFeedback, setSubmittedFeedback] = useState(false);
   const chatEndRef = useRef(null);
 
   // Initialize chat when results change
@@ -158,7 +161,64 @@ export function ResultsPanel({ results, loading }) {
             </p>
           </div>
 
-          {/* Feature details grids */}
+          {/* Suggest Correction (Data Flywheel) */}
+          <div style={{ marginTop: "-8px", marginBottom: "8px" }}>
+            {!showCorrection && !submittedFeedback && (
+              <button
+                onClick={() => setShowCorrection(true)}
+                style={{
+                  background: "none", border: "none", color: "var(--accent)",
+                  fontSize: "12px", cursor: "pointer", fontWeight: "600", padding: 0
+                }}
+              >
+                ✏️ Suggest Translation Correction (Help Train AI)
+              </button>
+            )}
+
+            {showCorrection && (
+              <div style={{
+                padding: "14px", backgroundColor: "rgba(255,255,255,0.03)",
+                borderRadius: "8px", border: "1px solid var(--border-color)",
+                display: "flex", flexDirection: "column", gap: "10px"
+              }}>
+                <label style={{ fontSize: "12px", color: "var(--text-muted)", fontWeight: "600" }}>
+                  What was your dog's actual state?
+                </label>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <select
+                    value={correctedMood}
+                    onChange={(e) => setCorrectedMood(e.target.value)}
+                    style={{
+                      flex: 1, padding: "8px", borderRadius: "6px",
+                      backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--border-color)",
+                      color: "white", fontSize: "13px"
+                    }}
+                  >
+                    <option value="happy">Happy / Playful</option>
+                    <option value="angry">Alert / Warning / Defensive</option>
+                    <option value="scared">Anxious / Scared</option>
+                    <option value="relaxed">Relaxed / Content</option>
+                  </select>
+                  <button
+                    onClick={() => {
+                      setSubmittedFeedback(true);
+                      setShowCorrection(false);
+                    }}
+                    className="btn-primary"
+                    style={{ padding: "8px 16px", fontSize: "12px" }}
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {submittedFeedback && (
+              <span style={{ fontSize: "12px", color: "var(--green-neon)", fontWeight: "600" }}>
+                ✓ Thank you! Correction saved to train future open-source models.
+              </span>
+            )}
+          </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
             
             {/* Pose outputs */}
