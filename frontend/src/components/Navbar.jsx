@@ -1,5 +1,4 @@
 import React from "react";
-import api from "../services/api";
 
 export function Navbar({ activeTab, setActiveTab, user, onLogout }) {
   const isPremium = user?.billing_status === "active";

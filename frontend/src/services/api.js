@@ -35,7 +35,7 @@ class ApiService {
     };
   }
 
-  async login(email, password) {
+  async login(email, _password) {
     // For local dev sandbox, we simulate Supabase login
     const fakeToken = `mock-token-${email.split('@')[0]}-${Date.now()}`;
     const fakeUser = {
@@ -123,7 +123,7 @@ class ApiService {
   }
 
   // Debug callback to simulate Razorpay payment callback triggers
-  async simulateWebhookSuccess(subscriptionId, orderId) {
+  async simulateWebhookSuccess(subscriptionId, _orderId) {
     const response = await fetch(`${API_BASE_URL}/billing/webhook`, {
       method: "POST",
       headers: {
