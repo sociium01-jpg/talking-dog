@@ -64,17 +64,22 @@ function App() {
   };
 
   if (!user) {
-    return <AuthScreen onLoginSuccess={handleLoginSuccess} />;
+    return (
+      <div className="app-container">
+        <AuthScreen onLoginSuccess={handleLoginSuccess} />
+      </div>
+    );
   }
 
   return (
-    <div>
+    <div className="app-container">
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         user={user}
         onLogout={handleLogout}
       />
+
 
       <main className="page-container">
         {activeTab === "dashboard" && (

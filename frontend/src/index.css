@@ -153,3 +153,49 @@ h1, h2, h3, h4 {
   background: linear-gradient(180deg, rgba(6, 182, 212, 0.15) 0%, transparent 100%);
   pointer-events: none;
 }
+
+/* Mobile Shell Layout Mockup for Desktop/Tablet Viewports */
+@media (min-width: 480px) {
+  .app-container {
+    max-width: 450px;
+    margin: 45px auto;
+    border-radius: 40px;
+    border: 12px solid #1e293b;
+    box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.8);
+    background-color: var(--bg-main);
+    overflow: hidden;
+    min-height: 880px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  /* Mock Smartphone Top Camera Notch */
+  .app-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px;
+    height: 24px;
+    background-color: #1e293b;
+    border-radius: 0 0 16px 16px;
+    z-index: 1000;
+  }
+
+  /* Padding adjustments to avoid overlap with smartphone mock notch */
+  header {
+    padding: 32px 20px 16px 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
