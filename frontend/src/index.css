@@ -156,15 +156,18 @@ h1, h2, h3, h4 {
 
 /* Mobile Shell Layout Mockup for Desktop/Tablet Viewports */
 @media (min-width: 480px) {
+  body {
+    overflow: hidden; /* Prevent background page double-scrollbars */
+  }
   .app-container {
     max-width: 450px;
-    margin: 45px auto;
+    height: 850px;
+    margin: 30px auto;
     border-radius: 40px;
     border: 12px solid #1e293b;
     box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.8);
     background-color: var(--bg-main);
     overflow: hidden;
-    min-height: 880px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -184,18 +187,21 @@ h1, h2, h3, h4 {
     z-index: 1000;
   }
 
-  /* Padding adjustments to avoid overlap with smartphone mock notch */
   header {
     padding: 32px 20px 16px 20px !important;
   }
 }
 
 @media (max-width: 480px) {
+  body {
+    overflow: hidden;
+  }
   .app-container {
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
   }
 }
 

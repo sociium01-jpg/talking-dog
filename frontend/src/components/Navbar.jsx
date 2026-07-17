@@ -3,58 +3,43 @@ import React from "react";
 export function Navbar({ activeTab, setActiveTab, user, onLogout }) {
   const isPremium = user?.billing_status === "active";
 
+  const navItems = [
+    { id: "dashboard", label: "Upload", icon: "📤" },
+    { id: "live", label: "Live", icon: "🔴" },
+    { id: "vets", label: "Vets", icon: "🏥" },
+    { id: "diet", label: "Diet", icon: "🥗" },
+    { id: "history", label: "History", icon: "🕓" },
+    { id: "billing", label: "Billing", icon: "💳" },
+    { id: "admin", label: "Admin", icon: "⚙️" }
+  ];
+
   return (
-    <header className="glass-panel" style={{ padding: "16px 32px", marginBottom: "40px", borderRadius: "0 0 16px 16px", borderTop: "none" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <span style={{ fontSize: "28px" }}>🐕</span>
+    <>
+      {/* Simple TOP HEADER Bar */}
+      <header className="glass-panel" style={{
+        padding: "16px 20px",
+        borderRadius: "0 0 16px 16px",
+        borderTop: "none",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: "20px"
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <span style={{ fontSize: "22px" }}>🐕</span>
           <div>
-            <h1 style={{ fontSize: "20px", background: "var(--accent-gradient)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+            <h1 style={{ fontSize: "16px", margin: 0, background: "var(--accent-gradient)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
               Talking Dog
             </h1>
-            <p style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px" }}>Body Language & Bark Translator</p>
           </div>
         </div>
 
-        <nav style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center" }}>
-          {[
-            { id: "dashboard", label: "📤 Upload" },
-            { id: "live", label: "🔴 Live" },
-            { id: "vets", label: "🏥 Vets" },
-            { id: "diet", label: "🥗 Diet" },
-            { id: "history", label: "🕓 History" },
-            { id: "billing", label: "💳 Billing" },
-            { id: "admin", label: "⚙️ Admin" }
-          ].map(({ id, label }) => (
-            <button
-              key={id}
-              onClick={() => setActiveTab(id)}
-              style={{
-                background: "none",
-                border: "none",
-                color: activeTab === id ? "var(--text-active)" : "var(--text-muted)",
-                fontWeight: activeTab === id ? "600" : "500",
-                fontSize: "12px",
-                cursor: "pointer",
-                padding: "6px 10px",
-                borderRadius: "6px",
-                backgroundColor: activeTab === id ? "rgba(255,255,255,0.05)" : "transparent",
-                transition: "all 0.2s ease",
-                whiteSpace: "nowrap"
-              }}
-            >
-              {label}
-            </button>
-          ))}
-        </nav>
-
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <div style={{ textAlign: "right" }}>
-            <p style={{ fontSize: "13px", fontWeight: "500" }}>{user?.full_name || user?.email}</p>
             <span
               style={{
-                fontSize: "10px",
-                padding: "3px 8px",
+                fontSize: "9px",
+                padding: "2px 6px",
                 borderRadius: "20px",
                 fontWeight: "700",
                 textTransform: "uppercase",
@@ -63,19 +48,67 @@ export function Navbar({ activeTab, setActiveTab, user, onLogout }) {
                 border: `1px solid ${isPremium ? "rgba(16, 185, 129, 0.3)" : "rgba(99, 102, 241, 0.3)"}`
               }}
             >
-              {isPremium ? "Premium Pro" : "Free Plan"}
+              {isPremium ? "Pro" : "Free"}
             </span>
           </div>
           <button
             onClick={onLogout}
             className="btn-secondary"
-            style={{ padding: "8px 16px", fontSize: "13px" }}
+            style={{ padding: "6px 12px", fontSize: "11px", borderRadius: "6px" }}
           >
             Sign Out
           </button>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Sticky BOTTOM TAB BAR */}
+      <nav className="glass-panel" style={{
+        position: "fixed",
+        bottom: 0,
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: "100%",
+        maxWidth: "450px", // align with smartphone mockup width
+        borderRadius: "16px 16px 0 0",
+        borderBottom: "none",
+        padding: "10px 4px",
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "center",
+        zIndex: 1000,
+        boxShadow: "0 -4px 20px rgba(0,0,0,0.4)"
+      }}>
+        {navItems.map((item) => {
+          const isActive = activeTab === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              style={{
+                background: "none",
+                border: "none",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "4px",
+                cursor: "pointer",
+                padding: "4px",
+                color: isActive ? "var(--text-active)" : "var(--text-muted)",
+                transition: "all 0.2s ease",
+                flex: 1
+              }}
+            >
+              <span style={{ fontSize: "20px", filter: isActive ? "grayscale(0%)" : "grayscale(80%) opacity(70%)" }}>
+                {item.icon}
+              </span>
+              <span style={{ fontSize: "9px", fontWeight: isActive ? "700" : "500", whiteSpace: "nowrap" }}>
+                {item.label}
+              </span>
+            </button>
+          );
+        })}
+      </nav>
+    </>
   );
 }
 

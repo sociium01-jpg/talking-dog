@@ -34,6 +34,11 @@ class SubscribeResponse(BaseModel):
     payment_link: str
     order_id: Optional[str] = None
 
+class VetSearchRequest(BaseModel):
+    lat: float
+    lng: float
+    radius: Optional[int] = 5000
+
 # Dependency to fetch authenticated user via JWT
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> Dict[str, Any]:
     try:
@@ -222,4 +227,19 @@ async def billing_webhook(request: Request, x_razorpay_signature: str = Header(N
             supabase_service.update_profile_billing(user_id, "inactive")
 
     return {"status": "processed"}
+
+@router.post("/vets/search")
+async def search_nearby_vets(request: VetSearchRequest, user: Dict[str, Any] = Depends(get_current_user)):
+    """
+    Search real-world veterinary clinics nearby the user's lat/lng coordinates globally.
+    """
+    try:
+        from app.services.vet_service import VetLocatorService
+        results = await VetLocatorService.find_nearby_vets(request.lat, request.lng, request.radius)
+        return results
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
 

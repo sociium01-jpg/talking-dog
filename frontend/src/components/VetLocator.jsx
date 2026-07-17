@@ -4,11 +4,12 @@
 // ==============================================================================
 
 import React, { useState } from "react";
+import api from "../services/api";
 
 const EMERGENCY_CHAINS = [
-  { name: "BluePearl Specialty & Emergency Pet Hospital", phone: "1-800-482-1594", hours: "24/7", address: "National Network" },
-  { name: "VCA Animal Hospitals Emergency Service", phone: "1-800-822-7387", hours: "24/7", address: "National Network" },
-  { name: "Banfield Pet Hospital (Emergency Care)", phone: "1-870-226-3435", hours: "Varies", address: "National Network" },
+  { name: "MaxPetz 24/7 Emergency Vet Clinic", phone: "+91 11 4041 4041", hours: "24/7 Open", address: "New Delhi, India" },
+  { name: "Cessna Lifeline 24/7 Animal Hospital", phone: "+91 80 4821 3945", hours: "24/7 Open", address: "Bengaluru, India" },
+  { name: "Crown Vet Emergency Care Center", phone: "+91 22 4893 9041", hours: "24/7 Open", address: "Mumbai, India" },
 ];
 
 export default function VetLocator() {
@@ -27,16 +28,17 @@ export default function VetLocator() {
     }
 
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        // Simulate Nearby Places API fetch using geo-coordinates
-        setTimeout(() => {
-          setResults([
-            { name: "Local Metro Emergency Animal Hospital", phone: "555-0192", distance: "1.4 miles", hours: "24/7 Open", address: "782 Medical Center Dr" },
-            { name: "Canine Care & Specialty Clinic", phone: "555-3841", distance: "3.2 miles", hours: "8:00 AM - 10:00 PM", address: "914 Oakwood Ave" },
-            { name: "Valley Veterinary Urgent Care", phone: "555-9012", distance: "4.8 miles", hours: "24/7 Open", address: "102 Industrial Pkwy" }
-          ]);
+      async (pos) => {
+        try {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          const clinics = await api.searchVets(lat, lng);
+          setResults(clinics);
+        } catch (err) {
+          setErrorMsg("Failed to query nearby vets. Falling back to default list.");
+        } finally {
           setLoading(false);
-        }, 1200);
+        }
       },
       (err) => {
         setErrorMsg("Failed to retrieve location. Please input postal code manually.");
@@ -45,18 +47,35 @@ export default function VetLocator() {
     );
   };
 
-  const handleSearchByCode = (e) => {
+  const handleSearchByCode = async (e) => {
     e.preventDefault();
     if (!postalCode) return;
     setLoading(true);
     setErrorMsg("");
-    setTimeout(() => {
-      setResults([
-        { name: "Metro Veterinary Clinic", phone: "555-4819", distance: "2.1 miles", hours: "24/7 Open", address: `501 Main St, Area ${postalCode}` },
-        { name: "Sunset Pet Urgent Care", phone: "555-3921", distance: "3.9 miles", hours: "8:00 AM - Midnight", address: `89 Broadway Rd, Area ${postalCode}` }
-      ]);
+    
+    try {
+      // Geolocate postal code using free open-source Nominatim API
+      const geoUrl = `https://nominatim.openstreetmap.org/search?postalcode=${encodeURIComponent(postalCode)}&format=json&limit=1`;
+      const response = await fetch(geoUrl, {
+        headers: { "User-Agent": "TalkingDogApp/1.0" }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.length > 0) {
+          const lat = parseFloat(data[0].lat);
+          const lng = parseFloat(data[0].lon);
+          const clinics = await api.searchVets(lat, lng);
+          setResults(clinics);
+          setLoading(false);
+          return;
+        }
+      }
+      setErrorMsg("Postal code location not found. Try searching near you.");
+    } catch (err) {
+      setErrorMsg("Failed to query geolocation services.");
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
