@@ -59,13 +59,21 @@ class FusionService:
                 uncertainty_note = " Please note that some behavior signals are weak or unknown, making this translation less certain."
 
             if posture == "play_bow" or vocalization == "high_bark":
-                narrative = f"The dog is displaying a classic play bow posture with a high-pitched bark and fast tail wagging. These signals suggest a state of high arousal and positive valence, indicating an active desire to play and interact.{uncertainty_note}"
+                speech = '"I am so incredibly happy! Grab the ball and throw it right now, let\'s play! 🎾"'
+                analysis = f"The dog is displaying a classic play bow posture with a high-pitched bark and fast tail wagging. These signals suggest a state of high arousal and positive valence, indicating an active desire to play.{uncertainty_note}"
+                narrative = f"{speech}\n\nBehavior Analysis: {analysis}"
             elif posture == "stiff" or vocalization == "growl":
-                narrative = f"The dog's posture is stiff and rigid, accompanied by a low-pitched growl and pinned back ears. This combination signals defensive high-arousal and negative valence, suggesting that the dog is feeling threatened or showing signs of warning.{uncertainty_note}"
+                speech = '"Hey! Back off! I don\'t know what you\'re doing, but it\'s making me feel threatened! ⚠️"'
+                analysis = f"The dog's posture is stiff and rigid, accompanied by a low-pitched growl and pinned back ears. This signals defensive high-arousal and negative valence, suggesting warning behaviors.{uncertainty_note}"
+                narrative = f"{speech}\n\nBehavior Analysis: {analysis}"
             elif posture == "cowering" or vocalization == "whine" or vocalization == "whimper":
-                narrative = f"The dog is cowering or whimpering with its tail tucked and ears pinned. These physical indicators show negative valence and medium arousal, pointing to anxiety, fear, or vulnerability.{uncertainty_note}"
+                speech = '"I feel super anxious and frightened right now... Can we go somewhere quiet? 🥺"'
+                analysis = f"The dog is cowering or whimpering with its tail tucked and ears pinned. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability.{uncertainty_note}"
+                narrative = f"{speech}\n\nBehavior Analysis: {analysis}"
             else:
-                narrative = f"The dog is showing a relaxed posture, neutral ears, and a slow tail wag. These signs reflect low arousal and a positive state, suggesting the dog is comfortable and content in its current environment.{uncertainty_note}"
+                speech = '"I feel completely safe, comfy, and content right now. Belly rubs please! 😌"'
+                analysis = f"The dog is showing a relaxed posture, neutral ears, and a slow tail wag. These signs reflect low arousal and comfort in their current environment.{uncertainty_note}"
+                narrative = f"{speech}\n\nBehavior Analysis: {analysis}"
             
             return narrative
 
