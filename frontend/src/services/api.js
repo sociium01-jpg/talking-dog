@@ -1,6 +1,7 @@
 // ============================================================
 // api.js — Talking Dog App API Service
-// Smart hybrid: tries live backend, falls back to local mock.
+// Sends real media bytes to Gemini Flash Vision via backend.
+// Falls back to rich on-device mock when backend is offline.
 // ============================================================
 
 const getApiBaseUrl = () => {
@@ -15,88 +16,120 @@ const getApiBaseUrl = () => {
 
 const API_BASE_URL = getApiBaseUrl();
 
-// ---- Local Mock Prediction Engine ----
-// Interprets posture + audio signals and generates a realistic
-// translation narrative without requiring a live backend.
+// ============================================================
+// Rich On-Device Fallback Engine
+// Used when backend is unreachable. Returns realistic analysis
+// based on the on-device sliding-window audio classification.
+// ============================================================
 
-const POSE_PROFILES = {
-  happy:   { posture: "play_bow",  tail_wag: "high_fast",    ears: "forward",  confidence: 0.95 },
-  angry:   { posture: "stiff",     tail_wag: "rigid_high",   ears: "backward", confidence: 0.91 },
-  scared:  { posture: "cowering",  tail_wag: "tucked",       ears: "pinned",   confidence: 0.88 },
-  relaxed: { posture: "relaxed",   tail_wag: "broad_slow",   ears: "neutral",  confidence: 0.85 },
-  alert:   { posture: "alert",     tail_wag: "medium_stiff", ears: "perked",   confidence: 0.87 },
-  excited: { posture: "bouncing",  tail_wag: "wagging_fast", ears: "forward",  confidence: 0.90 },
+const FALLBACK_PROFILES = {
+  happy: {
+    posture: "play_bow", tail_wag: "high_fast", ears: "forward",
+    vocalization: "high_bark", arousal: "high", valence: "positive", confidence: 0.85,
+    mood: "happy",
+    dog_says: "I am so happy right now! Let's play — throw something, run around, do anything! 🎾",
+    analysis: "Your dog is displaying clear play signals. The play bow posture is the universal canine invitation to play. A fast, high tail wag and forward ears confirm positive excitement.",
+    tip: "This is a great time for interactive play — fetch, tug-of-war, or a training session your dog will love."
+  },
+  excited: {
+    posture: "bouncing", tail_wag: "wagging_fast", ears: "forward",
+    vocalization: "yip", arousal: "high", valence: "positive", confidence: 0.88,
+    mood: "excited",
+    dog_says: "Something amazing is happening! Are we going out? Is that food? I can barely contain myself! 🌟",
+    analysis: "Your dog is in a state of high positive arousal. Bouncy movements, a rapidly wagging tail, and forward ears signal intense excitement about something in their environment.",
+    tip: "Channel this energy into a positive activity. If this excitement is unwanted (e.g., at the door), wait for a calm moment before rewarding with attention."
+  },
+  alert: {
+    posture: "alert_stand", tail_wag: "medium_stiff", ears: "perked",
+    vocalization: "mid_bark", arousal: "medium", valence: "neutral", confidence: 0.83,
+    mood: "alert",
+    dog_says: "Hold on — I heard or saw something. I'm checking it out. Don't worry, I'm on guard. 👀",
+    analysis: "Your dog has detected a stimulus and is in focused alert mode. The upright posture, stiffly held tail, and perked ears indicate they are processing something interesting or unfamiliar.",
+    tip: "Follow your dog's gaze to identify what triggered the alert. Calmly acknowledging it can help them settle faster."
+  },
+  relaxed: {
+    posture: "loose_sit", tail_wag: "broad_slow", ears: "neutral",
+    vocalization: "soft_pant", arousal: "low", valence: "positive", confidence: 0.87,
+    mood: "relaxed",
+    dog_says: "I feel completely safe and content right now. Maybe a belly rub? 😌",
+    analysis: "Your dog is displaying all the hallmarks of a relaxed, content dog. The loose body posture, slow tail wag, and neutral ear position indicate low stress and high comfort.",
+    tip: "This is an ideal time for bonding — gentle grooming, calm petting, or just sitting together."
+  },
+  anxious: {
+    posture: "lowered", tail_wag: "low_stiff", ears: "back",
+    vocalization: "whine", arousal: "medium", valence: "negative", confidence: 0.86,
+    mood: "anxious",
+    dog_says: "I'm not sure about this situation. Something is making me uncomfortable. Can we leave? 😟",
+    analysis: "Your dog is showing stress signals. A lowered body posture, ears pulled back, and whining are clear indicators of anxiety or discomfort.",
+    tip: "Identify and remove the stressor if possible. Do not force your dog toward what is worrying them."
+  },
+  scared: {
+    posture: "cowering", tail_wag: "tucked", ears: "pinned",
+    vocalization: "whimper", arousal: "low", valence: "negative", confidence: 0.89,
+    mood: "scared",
+    dog_says: "I am really frightened right now. Please make it stop — I just need to feel safe. 🥺",
+    analysis: "Your dog is in a fearful state. Cowering, a tucked tail, and pinned ears are unmistakable fear signals. This dog feels vulnerable and is seeking safety.",
+    tip: "Speak in a calm, soft voice. Give your dog a safe space to retreat to. Do not force interaction."
+  },
+  angry: {
+    posture: "stiff_stand", tail_wag: "rigid_high", ears: "forward_stiff",
+    vocalization: "growl", arousal: "high", valence: "negative", confidence: 0.91,
+    mood: "angry",
+    dog_says: "Back off. I am warning you. I feel threatened and I am serious. ⚠️",
+    analysis: "Your dog is sending a clear warning. A stiff, rigid body, high tail, and growling are escalating warning signals.",
+    tip: "Do not punish growling — it is important communication. Create distance between your dog and the trigger immediately."
+  }
 };
 
-const AUDIO_PROFILES = {
-  happy:   { vocalization: "high_bark",  arousal: "high",   valence: "positive", confidence: 0.93 },
-  angry:   { vocalization: "growl",      arousal: "high",   valence: "negative", confidence: 0.89 },
-  scared:  { vocalization: "whine",      arousal: "low",    valence: "negative", confidence: 0.86 },
-  relaxed: { vocalization: "soft_pant",  arousal: "low",    valence: "neutral",  confidence: 0.80 },
-  alert:   { vocalization: "mid_bark",   arousal: "medium", valence: "neutral",  confidence: 0.85 },
-  excited: { vocalization: "yip",        arousal: "high",   valence: "positive", confidence: 0.91 },
-};
-
-const NARRATIVES = {
-  happy: `"I am so incredibly happy! Grab the ball and throw it right now, let's play fetch! 🎾"\n\nBehavior Analysis: Your dog is in full play mode! The play bow posture — front legs down, rear end up — is one of the clearest signals dogs use to say "Let's play!" Their fast, high tail wag and forward ears confirm this is pure excitement and joy. Everything about their body language is inviting and friendly. This is a great time for fetch, tug-of-war, or a run in the park!`,
-  
-  angry: `"Hey! Back off! I don't know what you are doing, but it's making me feel threatened. Give me some space! ⚠️"\n\nBehavior Analysis: Your dog is sending a clear warning signal. The stiff, rigid body posture combined with a high, rigid tail indicates your dog is feeling defensive or threatened. Their backward ears suggest they are not comfortable with the current situation. Give them space, remove the trigger if possible, and do not approach suddenly.`,
-  
-  scared: `"Oh no... I feel super anxious and frightened right now. Can we go somewhere quiet? 🥺"\n\nBehavior Analysis: Your dog is frightened and asking for safety. The cowering posture, tucked tail, and pinned ears are textbook stress signals. Your dog feels vulnerable right now. Speak softly, crouch down to their level, and let them come to you on their own terms.`,
-  
-  relaxed: `"I feel completely safe, comfy, and content right now. Time for a long belly rub! 😌"\n\nBehavior Analysis: Your dog is at perfect ease. The loose, open body posture and slow, broad tail wag indicate a dog who feels completely safe and content. Their neutral ears confirm there is nothing worrying them. This is a happy resting state — your dog is comfortable in their environment.`,
-  
-  alert: `"Wait! Did you hear that? I see something super interesting over there. Let me inspect it! 👀"\n\nBehavior Analysis: Your dog has detected something interesting! The upright alert posture and perked ears mean they are focusing intently on something — a sound, a smell, or movement they want to investigate. Check the environment to see what caught their interest.`,
-  
-  excited: `"Oh my goodness! Yes! We are going for a walk? Or is that food? I am bursting with absolute joy! 🌟"\n\nBehavior Analysis: Your dog is bursting with excitement! The bouncy movement, fast wagging tail, and forward ears all point to a dog who is thrilled about something. The high-pitched yipping confirms pure, uninhibited joy. Enjoy this infectious enthusiasm!`,
-};
-
-// Detect mood from filename or URL keywords
-function detectMoodFromUrl(url = "") {
-  const u = url.toLowerCase();
-  if (u.includes("happy") || u.includes("play") || u.includes("fetch") || u.includes("frolic")) return "happy";
-  if (u.includes("angry") || u.includes("growl") || u.includes("aggress") || u.includes("stiff") || u.includes("warning")) return "angry";
-  if (u.includes("scared") || u.includes("fear") || u.includes("whimper") || u.includes("whine") || u.includes("cower")) return "scared";
-  if (u.includes("relax") || u.includes("calm") || u.includes("lounge") || u.includes("sleep") || u.includes("rest")) return "relaxed";
-  if (u.includes("alert") || u.includes("watch") || u.includes("curious") || u.includes("sniff")) return "alert";
-  if (u.includes("excit") || u.includes("zoom") || u.includes("run") || u.includes("yip") || u.includes("bounce")) return "excited";
-  // Default: cycle through moods for demo variety
-  const moods = ["happy", "relaxed", "alert", "excited"];
-  return moods[Math.floor(Date.now() / 5000) % moods.length];
+function buildFallbackNarrative(profile) {
+  return `"${profile.dog_says}"\n\nBehavior Analysis: ${profile.analysis}\n\n💡 Tip: ${profile.tip}`;
 }
 
-function buildMockPrediction(videoUrl, audioUrl) {
-  const videoMood = detectMoodFromUrl(videoUrl);
-  const audioMood = detectMoodFromUrl(audioUrl);
-  // Prefer video mood if video provided, else audio, else default
-  const mood = videoUrl ? videoMood : (audioUrl ? audioMood : "happy");
+function getMoodFromAudioClass(audioClass) {
+  if (!audioClass) return "relaxed";
+  const { vocalization, arousal, valence } = audioClass;
+  if (vocalization === "growl") return "angry";
+  if (vocalization === "whine" || vocalization === "whimper") return arousal === "high" ? "anxious" : "scared";
+  if (vocalization === "high_bark" && valence === "positive") return "happy";
+  if (vocalization === "yip") return "excited";
+  if (vocalization === "mid_bark") return "alert";
+  if (arousal === "high" && valence === "positive") return "excited";
+  if (arousal === "high" && valence === "negative") return "angry";
+  return "relaxed";
+}
 
-  const pose = POSE_PROFILES[mood];
-  const audio = AUDIO_PROFILES[mood];
-  const narrative = NARRATIVES[mood];
-  const confidence = (pose.confidence + audio.confidence) / 2;
-
+function buildLocalPrediction(audioClassification, breed) {
+  const mood = getMoodFromAudioClass(audioClassification);
+  const profile = FALLBACK_PROFILES[mood] || FALLBACK_PROFILES.relaxed;
   return {
     id: `local-${Date.now()}`,
-    pose_results: pose,
-    audio_results: audio,
-    fusion_narrative: narrative,
-    confidence,
-    _source: "local_mock",
+    pose_results: {
+      posture: profile.posture,
+      tail_wag: profile.tail_wag,
+      ears: profile.ears,
+      confidence: profile.confidence
+    },
+    audio_results: {
+      vocalization: profile.vocalization,
+      arousal: profile.arousal,
+      valence: profile.valence,
+      confidence: profile.confidence
+    },
+    fusion_narrative: buildFallbackNarrative(profile),
+    confidence: profile.confidence,
+    mood: profile.mood,
+    breed: breed || "Unknown",
+    _source: "local_fallback"
   };
 }
 
-// ---- API Service Class ----
-
+// ============================================================
+// API Service Class
+// ============================================================
 class ApiService {
   constructor() {
-    this.token = localStorage.getItem("auth_token") || "mock-token-developer-bypass";
-    this.user = JSON.parse(localStorage.getItem("user_profile")) || {
-      id: "developer-bypass",
-      email: "developer@example.com",
-      full_name: "Developer",
-      billing_status: "active",
-    };
+    this.token = localStorage.getItem("auth_token") || null;
+    this.user = JSON.parse(localStorage.getItem("user_profile")) || null;
   }
 
   setToken(token) {
@@ -110,10 +143,11 @@ class ApiService {
   }
 
   logout() {
-    this.token = "";
+    this.token = null;
     this.user = null;
     localStorage.removeItem("auth_token");
     localStorage.removeItem("user_profile");
+    localStorage.removeItem("dog_profile");
   }
 
   getHeaders() {
@@ -124,6 +158,23 @@ class ApiService {
   }
 
   async login(email, _password) {
+    // Try real Supabase auth first
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: _password }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        this.setToken(data.token);
+        this.setUser(data.user);
+        return data;
+      }
+    } catch {
+      // Backend offline — use local mock auth
+    }
+    // Local mock auth
     const fakeToken = `mock-token-${email.split("@")[0]}-${Date.now()}`;
     const fakeUser = {
       id: email === "premium@example.com" ? "premium-user-id" : `user-${Date.now()}`,
@@ -137,6 +188,21 @@ class ApiService {
   }
 
   async signup(email, _password, fullName) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: _password, full_name: fullName }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        this.setToken(data.token);
+        this.setUser(data.user);
+        return data;
+      }
+    } catch {
+      // Backend offline — use local mock
+    }
     const fakeToken = `mock-token-${email.split("@")[0]}-${Date.now()}`;
     const fakeUser = {
       id: `user-${Date.now()}`,
@@ -149,9 +215,56 @@ class ApiService {
     return { user: fakeUser, token: fakeToken };
   }
 
-  // Upload file — tries Render backend, falls back to local object URL
+  // ============================================================
+  // PREDICT — Sends actual file bytes to Gemini Flash Vision backend
+  // Falls back to on-device inference if backend is unreachable.
+  // ============================================================
+  async predictIntent(videoFile, audioFile, metadata = {}) {
+    const { breed, age, audioClassification } = metadata;
+
+    // Try live backend (sends real file bytes)
+    if (videoFile || audioFile) {
+      try {
+        const formData = new FormData();
+        if (videoFile instanceof File || videoFile instanceof Blob) {
+          formData.append("video", videoFile, videoFile.name || "capture.webm");
+        }
+        if (audioFile instanceof File || audioFile instanceof Blob) {
+          formData.append("audio", audioFile, audioFile.name || "audio.webm");
+        }
+        if (breed) formData.append("breed", breed);
+        if (age) formData.append("age", String(age));
+        if (audioClassification) {
+          formData.append("audio_classification", JSON.stringify(audioClassification));
+        }
+
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 30000); // 30s for Gemini
+        const response = await fetch(`${API_BASE_URL}/predict`, {
+          method: "POST",
+          headers: this.token ? { Authorization: `Bearer ${this.token}` } : {},
+          body: formData,
+          signal: controller.signal,
+        });
+        clearTimeout(timeout);
+
+        if (response.ok) {
+          const result = await response.json();
+          result.breed = breed || "Unknown";
+          return result;
+        }
+      } catch (err) {
+        console.warn("Backend predict failed, using on-device fallback:", err.message);
+      }
+    }
+
+    // On-device fallback using audio classification from sliding window
+    await new Promise((r) => setTimeout(r, 1000)); // brief thinking delay
+    return buildLocalPrediction(audioClassification, breed);
+  }
+
+  // Upload file (best-effort — used for history storage, not prediction)
   async uploadFile(file) {
-    // First try live backend
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -159,51 +272,18 @@ class ApiService {
       const timeout = setTimeout(() => controller.abort(), 8000);
       const response = await fetch(`${API_BASE_URL}/upload`, {
         method: "POST",
-        headers: { ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}) },
+        headers: this.token ? { Authorization: `Bearer ${this.token}` } : {},
         body: formData,
         signal: controller.signal,
       });
       clearTimeout(timeout);
-      if (response.ok) {
-        return response.json();
-      }
+      if (response.ok) return response.json();
     } catch {
-      // Backend unavailable — use local object URL as fallback
+      // ignore upload errors
     }
-    // Fallback: create a local blob URL with the filename intact
-    const localUrl = `local://${file.name}`;
-    return { filename: file.name, status: "uploaded", url: localUrl };
+    return { filename: file.name, status: "local", url: `local://${file.name}` };
   }
 
-  // Predict intent — tries Render backend, falls back to local mock engine
-  async predictIntent(videoUrl, audioUrl, breedMetadata = {}) {
-    // First try live backend
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 10000);
-      const response = await fetch(`${API_BASE_URL}/predict`, {
-        method: "POST",
-        headers: this.getHeaders(),
-        body: JSON.stringify({
-          video_url: videoUrl,
-          audio_url: audioUrl,
-          metadata: breedMetadata,
-        }),
-        signal: controller.signal,
-      });
-      clearTimeout(timeout);
-      if (response.ok) {
-        return response.json();
-      }
-    } catch {
-      // Backend unavailable — use local prediction engine
-    }
-    // Fallback: local mock prediction engine (always works, no network needed)
-    await new Promise((r) => setTimeout(r, 1200)); // simulate processing delay
-    return buildMockPrediction(videoUrl, audioUrl);
-  }
-
-  // Fetch prediction history (graceful fallback to empty array)
   async getHistory() {
     try {
       const controller = new AbortController();
@@ -218,19 +298,17 @@ class ApiService {
     } catch {
       // ignore
     }
-    // Return local session history from localStorage
     return JSON.parse(localStorage.getItem("local_history") || "[]");
   }
 
-  // Save prediction to local history
   saveToLocalHistory(result, metadata = {}) {
     const existing = JSON.parse(localStorage.getItem("local_history") || "[]");
     const entry = {
       ...result,
       created_at: new Date().toISOString(),
-      breed: metadata.breed || "Unknown",
+      breed: metadata.breed || result.breed || "Unknown",
     };
-    const updated = [entry, ...existing].slice(0, 20); // keep last 20
+    const updated = [entry, ...existing].slice(0, 20);
     localStorage.setItem("local_history", JSON.stringify(updated));
   }
 
@@ -243,10 +321,10 @@ class ApiService {
       });
       if (response.ok) return response.json();
     } catch (err) {
-      console.warn("Backend vet search failed, falling back to client-side OSM scraper...", err);
+      console.warn("Backend vet search failed, querying OSM directly...", err);
     }
-    
-    // Client-side OSM scraper backup (direct query to OpenStreetMap Overpass API)
+
+    // Client-side OSM fallback
     try {
       const overpassQuery = `[out:json];node(around:5000,${lat},${lng})[amenity=veterinary];out;`;
       const response = await fetch("https://overpass-api.de/api/interpreter", {
@@ -264,14 +342,14 @@ class ApiService {
         }));
       }
     } catch (err) {
-      console.error("Client-side OSM scraper failed too", err);
+      console.error("OSM vet search also failed:", err);
     }
 
-    // Static Indian Fallbacks if user is in India and query fails
+    // Indian emergency fallbacks
     return [
-      { name: "MaxPetz 24/7 Veterinary Hospital", phone: "+91 11 4041 4041", address: "New Delhi, India", hours: "24/7 Open", distance: "Local Region" },
-      { name: "Cessna Lifeline 24/7 Animal Hospital", phone: "+91 80 4821 3945", address: "Bengaluru, Karnataka, India", hours: "24/7 Open", distance: "Local Region" },
-      { name: "Crown Vet Emergency Care", phone: "+91 22 4893 9041", address: "Mumbai, Maharashtra, India", hours: "24/7 Open", distance: "Local Region" }
+      { name: "MaxPetz 24/7 Emergency Vet Clinic", phone: "+91 11 4041 4041", address: "New Delhi, India", hours: "24/7 Open", distance: "Local Region" },
+      { name: "Cessna Lifeline 24/7 Animal Hospital", phone: "+91 80 4821 3945", address: "Bengaluru, India", hours: "24/7 Open", distance: "Local Region" },
+      { name: "Crown Vet Emergency Care", phone: "+91 22 4893 9041", address: "Mumbai, India", hours: "24/7 Open", distance: "Local Region" }
     ];
   }
 
@@ -317,7 +395,6 @@ class ApiService {
     } catch {
       // ignore
     }
-    // Local fallback — update state directly
     const updatedUser = { ...this.user, billing_status: "active" };
     this.setUser(updatedUser);
     return updatedUser;

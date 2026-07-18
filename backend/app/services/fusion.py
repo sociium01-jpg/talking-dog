@@ -1,178 +1,237 @@
-import os
+# ==============================================================================
+# fusion.py — Gemini Flash Vision Interpretation Engine
+# Sends raw video/audio bytes as base64 to Gemini Flash for real-time
+# bark-to-human-language translation and body language analysis.
+# Falls back to rich template narratives when no API key is configured.
+# ==============================================================================
+
 import re
-import asyncio
+import base64
+import json
+import httpx
+import logging
 from app.core.config import settings
 
+logger = logging.getLogger(__name__)
+
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+
+SYSTEM_PROMPT = """You are an expert canine behaviorist and ethologist. You analyze dog body language and vocalizations from video/audio and translate them into plain English for dog owners.
+
+CRITICAL RULES:
+1. ONLY describe what you can actually observe in the provided media. Do not invent behaviors.
+2. Translate bark/growl/whine sounds into what the dog is communicating in plain human language.
+3. Describe body posture, tail position, ear position, and movement patterns from video.
+4. Keep the tone warm, practical, and helpful for a pet owner.
+5. Do NOT use medical, clinical, or veterinary diagnostic terms.
+6. Return ONLY valid JSON — no markdown fences, no extra text.
+
+Return this exact JSON structure:
+{
+  "mood": "<one of: happy, excited, alert, relaxed, anxious, scared, angry, playful>",
+  "posture": "<brief posture description>",
+  "tail_wag": "<tail behavior description>",
+  "ears": "<ear position>",
+  "vocalization": "<bark/growl/whine/pant/silent/other>",
+  "arousal": "<high/medium/low>",
+  "valence": "<positive/neutral/negative>",
+  "confidence": <0.0 to 1.0>,
+  "dog_says": "<What the dog is communicating in first person, 1-2 sentences, as if the dog is speaking>",
+  "analysis": "<Expert behavioral analysis for the owner, 2-3 sentences. Mention specific observed body language cues.>",
+  "tip": "<One practical tip for the owner based on this behavior>"
+}"""
+
+
 class FusionService:
-    BEHAVIOR_PROFILES = {
+    """
+    Sends media (video or audio bytes, base64-encoded) to Gemini Flash Vision
+    and returns a structured behavior translation + human-language narrative.
+    """
+
+    FALLBACK_PROFILES = {
         "happy": {
-            "speech": '"I am so incredibly happy! Grab the ball and throw it right now, let\'s play! 🎾"',
-            "analysis_template": "The dog is displaying a playful posture (play_bow) with forward ears and a fast tail wag. These signals suggest a state of high arousal and positive valence, indicating an active desire to interact and play.",
-            "tone": "playful and energetic"
-        },
-        "angry": {
-            "speech": '"Hey! Back off! I don\'t know what you\'re doing, but it\'s making me feel threatened! ⚠️"',
-            "analysis_template": "The dog's posture is stiff and rigid, accompanied by pinned back or backward ears. This signals defensive high-arousal and negative valence, suggesting warning behaviors.",
-            "tone": "firm, protective, and warning"
-        },
-        "scared": {
-            "speech": '"I feel super anxious and frightened right now... Can we go somewhere quiet? 🥺"',
-            "analysis_template": "The dog is showing signs of high stress, with a cowering posture, tucked tail, and pinned ears. These physical indicators show negative valence and anxiety, pointing to fear or vulnerability.",
-            "tone": "submissive and fearful"
-        },
-        "relaxed": {
-            "speech": '"I feel completely safe, comfy, and content right now. Belly rubs please! 😌"',
-            "analysis_template": "The dog is showing a relaxed body posture, neutral ears, and a slow tail wag. These signs reflect low arousal and comfort in their current environment.",
-            "tone": "calm and content"
-        },
-        "alert": {
-            "speech": '"Wait! Did you hear that? I see something super interesting over there. Let me inspect it! 👀"',
-            "analysis_template": "The dog has detected something interesting, displaying an alert posture with perked ears. This indicates focused attention and curiosity about their environment.",
-            "tone": "focused and alert"
+            "mood": "happy", "posture": "play_bow", "tail_wag": "high_fast", "ears": "forward",
+            "vocalization": "high_bark", "arousal": "high", "valence": "positive", "confidence": 0.85,
+            "dog_says": "I am so happy right now! Let's play — throw something, run around, do anything! 🎾",
+            "analysis": "Your dog is displaying clear play signals. The play bow posture (front legs down, rear up) is the universal canine invitation to play. A fast, high tail wag and forward ears confirm positive excitement.",
+            "tip": "This is a great time for interactive play — fetch, tug-of-war, or a training session your dog will love."
         },
         "excited": {
-            "speech": '"Oh my goodness! Yes! We are going for a walk? Or is that food? I am bursting with absolute joy! 🌟"',
-            "analysis_template": "The dog is displaying high excitement, with bouncy movements, forward ears, and a very fast tail wag. This confirms pure, uninhibited joy and positive high arousal.",
-            "tone": "extremely excited and joyous"
+            "mood": "excited", "posture": "bouncing", "tail_wag": "wagging_fast", "ears": "forward",
+            "vocalization": "yip", "arousal": "high", "valence": "positive", "confidence": 0.88,
+            "dog_says": "Something amazing is happening! Are we going out? Is that food? I can barely contain myself! 🌟",
+            "analysis": "Your dog is in a state of high positive arousal. Bouncy movements, a rapidly wagging tail, and forward ears all signal intense excitement about something in their environment.",
+            "tip": "Channel this energy into a positive activity. If this excitement is unwanted (e.g., at the door), wait for a calm moment before rewarding with attention."
+        },
+        "alert": {
+            "mood": "alert", "posture": "alert_stand", "tail_wag": "medium_stiff", "ears": "perked",
+            "vocalization": "mid_bark", "arousal": "medium", "valence": "neutral", "confidence": 0.83,
+            "dog_says": "Hold on — I heard or saw something. I'm checking it out. Don't worry, I'm on guard. 👀",
+            "analysis": "Your dog has detected a stimulus and is in focused alert mode. The upright posture, stiffly held tail, and perked ears indicate they are processing something interesting or unfamiliar.",
+            "tip": "Follow your dog's gaze to identify what triggered the alert. Calmly acknowledging it with 'good dog' can help them settle faster."
+        },
+        "relaxed": {
+            "mood": "relaxed", "posture": "loose_sit_or_lie", "tail_wag": "broad_slow", "ears": "neutral",
+            "vocalization": "soft_pant", "arousal": "low", "valence": "positive", "confidence": 0.87,
+            "dog_says": "I feel completely safe and content right now. Maybe a belly rub? 😌",
+            "analysis": "Your dog is displaying all the hallmarks of a relaxed, content dog. The loose body posture, slow tail wag, and neutral ear position indicate low stress and high comfort.",
+            "tip": "This is an ideal time for bonding — gentle grooming, calm petting, or just sitting together reinforces a sense of security."
+        },
+        "anxious": {
+            "mood": "anxious", "posture": "lowered", "tail_wag": "low_stiff", "ears": "back",
+            "vocalization": "whine", "arousal": "medium", "valence": "negative", "confidence": 0.86,
+            "dog_says": "I'm not sure about this situation. Something is making me uncomfortable. Can we leave? 😟",
+            "analysis": "Your dog is showing stress signals. A lowered body posture, ears pulled back, and whining are clear indicators of anxiety or discomfort about something in their environment.",
+            "tip": "Identify and remove the stressor if possible. Do not force your dog toward what is worrying them — let them approach at their own pace."
+        },
+        "scared": {
+            "mood": "scared", "posture": "cowering", "tail_wag": "tucked", "ears": "pinned",
+            "vocalization": "whimper", "arousal": "low", "valence": "negative", "confidence": 0.89,
+            "dog_says": "I am really frightened right now. Please make it stop — I just need to feel safe. 🥺",
+            "analysis": "Your dog is in a fearful state. Cowering, a tucked tail, and pinned ears are unmistakable fear signals. This dog feels vulnerable and is seeking safety.",
+            "tip": "Speak in a calm, soft voice. Give your dog a safe space to retreat to — a crate or quiet corner. Do not force interaction or reassure excessively, as that can reinforce the fear response."
+        },
+        "angry": {
+            "mood": "angry", "posture": "stiff_stand", "tail_wag": "rigid_high", "ears": "forward_stiff",
+            "vocalization": "growl", "arousal": "high", "valence": "negative", "confidence": 0.91,
+            "dog_says": "Back off. I am warning you. I feel threatened and I am serious. ⚠️",
+            "analysis": "Your dog is sending a clear warning. A stiff, rigid body, high tail, forward ears, and growling are escalating warning signals. This is the dog's final communication before they feel they must act.",
+            "tip": "Do not punish growling — it is important communication. Create distance between your dog and the trigger immediately. Consult a behavioral professional if this is recurring."
+        },
+        "playful": {
+            "mood": "playful", "posture": "play_bow", "tail_wag": "wagging", "ears": "forward",
+            "vocalization": "play_bark", "arousal": "high", "valence": "positive", "confidence": 0.90,
+            "dog_says": "Come on, let's wrestle! Chase me! This is the best day ever! 🐾",
+            "analysis": "Your dog is in full play mode. Play barks, a play bow, and a wagging tail are universally recognized play invitations. The body language is loose and bouncy, not tense.",
+            "tip": "Accept the invitation! Play is essential for your dog's mental and physical health. Keep sessions to 10-15 minutes to avoid over-stimulation."
         }
     }
 
     def __init__(self):
-        self.api_key = settings.LLM_API_KEY
-        self.is_mock = "mock" in self.api_key or self.api_key == "mock-llm-key"
-        if not self.is_mock:
-            try:
-                import vertexai
-                from vertexai.generative_models import GenerativeModel
-                vertexai.init(project=settings.GCP_PROJECT_ID, location=settings.GCP_REGION)
-                self.model = GenerativeModel("gemini-1.5-flash-preview-0514")
-            except Exception:
-                self.is_mock = True
+        self.api_key = settings.GEMINI_API_KEY
+        self.has_key = bool(self.api_key and len(self.api_key) > 10)
 
-    def _determine_mood(self, pose: dict, audio: dict) -> str:
-        posture = pose.get("posture")
-        vocalization = audio.get("vocalization")
-        valence = audio.get("valence")
-        arousal = audio.get("arousal")
+    def _build_narrative(self, data: dict) -> str:
+        """Convert structured Gemini JSON output into a rich display narrative."""
+        dog_says = data.get("dog_says", "")
+        analysis = data.get("analysis", "")
+        tip = data.get("tip", "")
+        return f'"{dog_says}"\n\nBehavior Analysis: {analysis}\n\n💡 Tip: {tip}'
 
-        # Direct posture/vocal mappings
-        if posture == "play_bow" or vocalization == "high_bark":
-            return "happy"
-        if posture == "stiff" or vocalization == "growl":
-            return "angry"
-        if posture == "cowering" or vocalization in ("whine", "whimper"):
-            return "scared"
-        if posture == "relaxed" or vocalization == "soft_pant":
-            return "relaxed"
-        if posture == "alert" or vocalization == "mid_bark":
-            return "alert"
-        if posture == "bouncing" or vocalization == "yip":
-            return "excited"
-
-        # Heuristic fallbacks based on valence/arousal
-        if valence == "positive":
-            return "happy" if arousal == "high" else "relaxed"
-        if valence == "negative":
-            return "angry" if arousal == "high" else "scared"
-        if arousal == "medium":
-            return "alert"
-        
-        return "relaxed"
-
-    def _sanitize_narrative(self, text: str) -> str:
-        # Strict filter preventing diagnostic or veterinary hallucinations
-        restricted = ["clinical", "veterinary", "rabies", "disease", "diagnosis", "veterinarian"]
+    def _sanitize(self, text: str) -> str:
+        """Strip any disallowed clinical/veterinary terms from output."""
+        restricted = ["clinical", "veterinary", "rabies", "disease", "diagnosis",
+                      "veterinarian", "patholog", "symptom"]
         for term in restricted:
             text = re.sub(re.escape(term), "behavioral", text, flags=re.IGNORECASE)
         return text
 
-    async def _generate_fallback_narrative(self, pose_results: dict, audio_results: dict) -> str:
-        mood = self._determine_mood(pose_results, audio_results)
-        profile = self.BEHAVIOR_PROFILES[mood]
+    def _get_fallback(self, hint: str = "") -> dict:
+        """Return a fallback profile based on a hint keyword."""
+        hint = hint.lower()
+        for mood in ["happy", "excited", "alert", "relaxed", "anxious", "scared", "angry", "playful"]:
+            if mood in hint:
+                return self.FALLBACK_PROFILES[mood]
+        return self.FALLBACK_PROFILES["relaxed"]
 
-        speech = profile["speech"]
-        analysis = profile["analysis_template"]
-
-        # Dynamic details injection
-        posture = pose_results.get("posture")
-        tail = pose_results.get("tail_wag")
-        ears = pose_results.get("ears")
-        vocal = audio_results.get("vocalization")
-
-        details = []
-        if posture and posture != "unknown":
-            details.append(f"posture is {posture}")
-        if tail and tail != "unknown":
-            details.append(f"tail wag is {tail}")
-        if ears and ears != "unknown":
-            details.append(f"ears are {ears}")
-        if vocal and vocal != "unknown":
-            details.append(f"vocalization is {vocal}")
-
-        if details:
-            analysis += f" Specific observed markers include: {', '.join(details)}."
-
-        # Safety & Grounding (Uncertainty Note)
-        p_conf = pose_results.get("confidence", 1.0)
-        a_conf = audio_results.get("confidence", 1.0)
-        
-        if p_conf < 0.7 or a_conf < 0.7 or posture == "unknown" or vocal == "unknown":
-            analysis += " Please note that some behavior signals are weak or unknown, making this translation less certain."
-
-        narrative = f"{speech}\n\nBehavior Analysis: {analysis}"
-        return self._sanitize_narrative(narrative)
-
-    async def generate_narrative(self, pose_results: dict, audio_results: dict) -> str:
+    async def analyze_media(
+        self,
+        video_bytes: bytes = None,
+        audio_bytes: bytes = None,
+        video_mime: str = "video/webm",
+        audio_mime: str = "audio/webm",
+        breed: str = "",
+        age: int = None,
+        pre_audio_classification: dict = None
+    ) -> dict:
         """
-        Combines pose and audio features into a plain-English translation.
-        Enforces strict system instruction grounding to prevent hallucinations.
+        Main entry point. Sends media to Gemini Flash Vision or uses fallback.
+        Returns structured dict with mood, posture, vocalization, narrative etc.
         """
-        if self.is_mock:
-            return await self._generate_fallback_narrative(pose_results, audio_results)
+        if not self.has_key:
+            logger.warning("No GEMINI_API_KEY configured — using rich fallback narratives.")
+            fallback = self._get_fallback()
+            fallback["fusion_narrative"] = self._build_narrative(fallback)
+            return fallback
 
-        system_instruction = (
-            "You are a dog behavior translation assistant. Your role is to translate structured dog "
-            "classification outputs (pose postures and vocalization labels) into a clear, natural-language explanation for owners.\n\n"
-            "CRITICAL RULES:\n"
-            "1. ONLY refer to elements explicitly present in the provided JSON input.\n"
-            "2. DO NOT make assumptions about the dog's background, past life, thoughts, or complex human emotions.\n"
-            "3. Keep the tone professional, objective, and clear.\n"
-            "4. If the confidence values are low (e.g. under 0.70) or values are missing/unknown, you MUST state that the observation is uncertain or incomplete.\n"
-            "5. Limit the description to exactly 2-3 sentences.\n"
-            "6. DO NOT use medical, diagnostic, clinical, or veterinary terms (such as 'rabies', 'clinical', 'disease', 'diagnosis', 'veterinary', or 'veterinarian'). Focus strictly on behavioral cues.\n"
-            "7. The final output MUST strictly adhere to the following format, with a direct dog translation quote enclosed in double quotes, followed by two newlines, then 'Behavior Analysis: ' and a detailed objective analysis:\n"
-            '"[Dog quote here]"\n\nBehavior Analysis: [Your objective behavior analysis here]'
-        )
+        # Build Gemini multimodal request parts
+        parts = []
 
-        prompt = (
-            f"Translate the following dog classification results into a clear 2-3 sentence explanation:\n\n"
-            f"POSE CLASSIFIER:\n"
-            f"- Posture: {pose_results.get('posture')} (confidence: {pose_results.get('confidence', 0.0)})\n"
-            f"- Tail motion: {pose_results.get('tail_wag')}\n"
-            f"- Ears position: {pose_results.get('ears')}\n\n"
-            f"AUDIO CLASSIFIER:\n"
-            f"- Vocalization: {audio_results.get('vocalization')} (confidence: {audio_results.get('confidence', 0.0)})\n"
-            f"- Arousal level: {audio_results.get('arousal')}\n"
-            f"- Valence: {audio_results.get('valence')}\n"
-        )
+        # Dog context metadata
+        context = "Analyze this dog's behavior."
+        if breed:
+            context += f" The dog is a {breed}."
+        if age:
+            context += f" The dog is {age} years old."
+        if pre_audio_classification:
+            voc = pre_audio_classification.get("vocalization", "")
+            arousal = pre_audio_classification.get("arousal", "")
+            context += (f" On-device audio analysis detected: vocalization type='{voc}', "
+                        f"arousal='{arousal}'. Use this as supporting evidence only.")
+
+        parts.append({"text": f"{SYSTEM_PROMPT}\n\nContext: {context}"})
+
+        # Attach video if available
+        if video_bytes and len(video_bytes) > 100:
+            b64_video = base64.b64encode(video_bytes).decode("utf-8")
+            parts.append({
+                "inline_data": {
+                    "mime_type": video_mime,
+                    "data": b64_video
+                }
+            })
+
+        # Attach audio if available (and no video, or as supplement)
+        if audio_bytes and len(audio_bytes) > 100 and not video_bytes:
+            b64_audio = base64.b64encode(audio_bytes).decode("utf-8")
+            parts.append({
+                "inline_data": {
+                    "mime_type": audio_mime,
+                    "data": b64_audio
+                }
+            })
+
+        parts.append({"text": "Now analyze the dog behavior shown and return ONLY valid JSON as specified."})
+
+        payload = {
+            "contents": [{"role": "user", "parts": parts}],
+            "generationConfig": {
+                "temperature": 0.3,
+                "maxOutputTokens": 800,
+                "responseMimeType": "application/json"
+            }
+        }
 
         try:
-            from vertexai.generative_models import Content, Part
-            contents = [
-                Content(role="user", parts=[Part.from_text(f"{system_instruction}\n\n{prompt}")])
-            ]
-            loop = asyncio.get_event_loop()
-            response = await loop.run_in_executor(
-                None, 
-                lambda: self.model.generate_content(contents)
-            )
-            narrative = response.text.strip()
-            
-            # Verify the output structure of the LLM narrative.
-            # If the LLM didn't follow the structure, fall back to mock.
-            if 'behavior analysis:' in narrative.lower() and narrative.startswith('"'):
-                return self._sanitize_narrative(narrative)
-            else:
-                return await self._generate_fallback_narrative(pose_results, audio_results)
-        except Exception:
-            return await self._generate_fallback_narrative(pose_results, audio_results)
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                response = await client.post(
+                    f"{GEMINI_API_URL}?key={self.api_key}",
+                    json=payload,
+                    headers={"Content-Type": "application/json"}
+                )
+
+            if response.status_code != 200:
+                logger.error(f"Gemini API error {response.status_code}: {response.text[:500]}")
+                fallback = self._get_fallback()
+                fallback["fusion_narrative"] = self._build_narrative(fallback)
+                return fallback
+
+            resp_json = response.json()
+            raw_text = resp_json["candidates"][0]["content"]["parts"][0]["text"]
+            # Strip markdown fences if present
+            raw_text = re.sub(r"```(?:json)?", "", raw_text).strip()
+            data = json.loads(raw_text)
+
+            # Build full narrative from structured fields
+            data["fusion_narrative"] = self._sanitize(self._build_narrative(data))
+            return data
+
+        except json.JSONDecodeError as e:
+            logger.error(f"Gemini returned non-JSON: {e}")
+        except Exception as e:
+            logger.error(f"Gemini API call failed: {e}")
+
+        # Fallback on any exception
+        fallback = self._get_fallback()
+        fallback["fusion_narrative"] = self._build_narrative(fallback)
+        return fallback

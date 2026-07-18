@@ -16,6 +16,7 @@ export default function LiveCapture({ onResult }) {
   const analyserRef = useRef(null);
   const animFrameRef = useRef(null);
   const slidingClassifierRef = useRef(null);
+  const lastAudioClassRef = useRef(null); // persists last classification for post-recording use
 
   const [isStreaming, setIsStreaming] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -26,8 +27,12 @@ export default function LiveCapture({ onResult }) {
   const [status, setStatus] = useState("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [cameraSupported, setCameraSupported] = useState(true);
-  const [breed, setBreed] = useState("");
-  const [age, setAge] = useState("");
+  const [breed, setBreed] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("dog_profile") || "{}").breed || ""; } catch { return ""; }
+  });
+  const [age, setAge] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("dog_profile") || "{}").age || ""; } catch { return ""; }
+  });
   const [realtimeAudioClass, setRealtimeAudioClass] = useState(null);
   const [optIn, setOptIn] = useState(true);
 
@@ -63,6 +68,7 @@ export default function LiveCapture({ onResult }) {
       const classifier = new LiveAudioSlidingWindowClassifier({
         onClassification: (res) => {
           setRealtimeAudioClass(res);
+          lastAudioClassRef.current = res; // keep reference for post-recording prediction
         }
       });
       classifier.start(stream);
@@ -154,9 +160,12 @@ export default function LiveCapture({ onResult }) {
     setCountdown(null);
   }, []);
 
-  // Handle recording blob — upload and predict
+  // Handle recording blob — send real video bytes + audio classification to Gemini
   const handleRecordingStop = useCallback(async () => {
-    setStatus("uploading");
+    setStatus("analyzing");
+
+    // Capture last audio classification before stopping classifier
+    const capturedAudioClass = lastAudioClassRef.current;
 
     // Stop and clean up all stream tracks immediately to release the camera device
     if (streamRef.current) {
@@ -169,29 +178,28 @@ export default function LiveCapture({ onResult }) {
     }
     setIsStreaming(false);
     setRealtimeAudioClass(null);
+    lastAudioClassRef.current = null;
 
     try {
       const mimeType = chunksRef.current[0]?.type || "video/webm";
       const ext = mimeType.includes("mp4") ? "mp4" : "webm";
       const blob = new Blob(chunksRef.current, { type: mimeType });
-      const file = new File([blob], `live_capture_${Date.now()}.${ext}`, { type: mimeType });
+      // Create a real File object with the video data
+      const videoFile = new File([blob], `live_capture_${Date.now()}.${ext}`, { type: mimeType });
 
-      // Upload video file
-      const uploadResult = await api.uploadFile(file);
-      const videoUrl = uploadResult.url;
-
-      // Run prediction using uploaded URL + breed metadata
-      const result = await api.predictIntent(videoUrl, null, {
-        source: "live_capture",
+      // Send video File bytes + on-device audio classification to Gemini Flash Vision
+      const result = await api.predictIntent(videoFile, null, {
         breed: breed || "Unknown",
-        age: age ? parseInt(age) : null
+        age: age ? parseInt(age) : null,
+        audioClassification: capturedAudioClass  // feeds on-device bark analysis into Gemini prompt
       });
+
       api.saveToLocalHistory(result, { breed: breed || "Unknown" });
       setStatus("done");
       if (onResult) onResult(result);
     } catch (err) {
       setStatus("error");
-      setErrorMsg(`Processing failed: ${err.message}`);
+      setErrorMsg(`Analysis failed: ${err.message}`);
     }
   }, [onResult, breed, age]);
 

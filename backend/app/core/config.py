@@ -18,6 +18,7 @@ class Settings:
     
     # LLM Settings
     LLM_API_KEY: str = os.getenv("LLM_API_KEY", "mock-llm-key")
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
 
     # Razorpay configurations
     RAZORPAY_KEY_ID: str = os.getenv("RAZORPAY_KEY_ID", "mock-rzp-key")

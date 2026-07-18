@@ -29,18 +29,6 @@ export function AuthScreen({ onLoginSuccess }) {
     }
   };
 
-  const handleBypass = () => {
-    // Quickly set a mock developer bypass profile
-    const devUser = {
-      id: "test-user-guid-12345",
-      email: "developer@example.com",
-      full_name: "Developer Bypass",
-      billing_status: "inactive"
-    };
-    api.setToken("mock-token-developer-bypass");
-    api.setUser(devUser);
-    onLoginSuccess(devUser);
-  };
 
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "80vh", padding: "20px" }}>
@@ -114,16 +102,6 @@ export function AuthScreen({ onLoginSuccess }) {
           </button>
         </div>
 
-        <div style={{ marginTop: "32px", borderTop: "1px solid var(--border-color)", paddingTop: "24px", textAlign: "center" }}>
-          <p style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "12px" }}>Local Sandbox / Testing Sandbox</p>
-          <button
-            onClick={handleBypass}
-            className="btn-secondary"
-            style={{ width: "100%", fontSize: "13px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}
-          >
-            ⚙️ Developer Bypass (Mock Auth Mode)
-          </button>
-        </div>
       </div>
     </div>
   );

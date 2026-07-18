@@ -47,24 +47,12 @@ function App() {
     setPredictLoading(true);
   };
 
-  const handleUploadComplete = async (videoUrl, audioUrl, metadata) => {
-    try {
-      const response = await api.predictIntent(videoUrl, audioUrl, metadata);
-      setPredictionResults(response);
-      // Save to local history so the History tab always shows results
-      api.saveToLocalHistory(response, metadata);
-    } catch (err) {
-      setPredictionResults({
-        _error: true,
-        fusion_narrative: `Something went wrong: ${err.message}. Please try again.`,
-        confidence: 0,
-        pose_results: {},
-        audio_results: {},
-      });
-    } finally {
-      setPredictLoading(false);
-    }
+  // UploadZone now calls predictIntent() internally and passes the final result here
+  const handleUploadComplete = (result) => {
+    setPredictionResults(result);
+    setPredictLoading(false);
   };
+
 
   const handleBillingUpdate = (updatedProfile) => {
     setUser(updatedProfile);

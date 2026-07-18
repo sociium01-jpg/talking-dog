@@ -142,20 +142,13 @@ export default function OnboardingFunnel({ onOnboardingComplete, onCancel }) {
   };
 
   const handleFinishOnboarding = (profile) => {
-    // Save calibrated dog profile to local storage
-    localStorage.setItem("calibrated_dog", JSON.stringify({
-      name: dogName,
-      age: dogAge,
-      breed,
-      size,
-      earType,
-      tailType,
-      color
-    }));
-    
-    // Complete onboarding pass back to App
+    // Save dog profile to localStorage — used by UploadZone & LiveCapture to pre-fill breed/age
+    const dogProfile = { name: dogName, age: dogAge, breed, size, earType, tailType, color };
+    localStorage.setItem("dog_profile", JSON.stringify(dogProfile));
+    localStorage.setItem("calibrated_dog", JSON.stringify(dogProfile)); // keep old key for compat
     onOnboardingComplete(profile);
   };
+
 
   return (
     <div style={{

@@ -57,7 +57,13 @@ export function ResultsPanel({ results, loading }) {
 
   if (!results) return null;
 
-  const { pose_results, audio_results, fusion_narrative, confidence, breed } = results;
+  const { pose_results, audio_results, fusion_narrative, confidence, breed, mood } = results;
+
+  const MOOD_EMOJI = {
+    happy: "😄", excited: "🌟", alert: "👀", relaxed: "😌",
+    anxious: "😟", scared: "🥺", angry: "⚠️", playful: "🐾"
+  };
+  const moodEmoji = MOOD_EMOJI[mood] || "🐕";
 
   const getValenceColor = (val) => {
     if (val === "positive") return "var(--green-neon)";
@@ -133,6 +139,7 @@ export function ResultsPanel({ results, loading }) {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <h3 style={{ fontSize: "16px", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Translation Engine</h3>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <span style={{ fontSize: "18px" }}>{moodEmoji}</span>
               <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>Confidence:</span>
               <span style={{
                 fontSize: "12px",
@@ -153,11 +160,14 @@ export function ResultsPanel({ results, loading }) {
             borderLeft: "4px solid var(--accent)",
             padding: "20px",
             borderRadius: "8px",
-            lineHeight: "1.6"
+            lineHeight: "1.7"
           }}>
-            <span style={{ fontSize: "11px", color: "var(--accent)", fontWeight: "700", display: "block", textTransform: "uppercase", marginBottom: "6px" }}>Grounded Translation</span>
-            <p style={{ fontSize: "15px", fontWeight: "500", color: "#f8fafc" }}>
-              "{fusion_narrative}"
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" }}>
+              <span style={{ fontSize: "20px" }}>{moodEmoji}</span>
+              <span style={{ fontSize: "11px", color: "var(--accent)", fontWeight: "700", textTransform: "uppercase" }}>Dog Translation</span>
+            </div>
+            <p style={{ fontSize: "14px", fontWeight: "400", color: "#f1f5f9", whiteSpace: "pre-line", margin: 0 }}>
+              {fusion_narrative}
             </p>
           </div>
 
